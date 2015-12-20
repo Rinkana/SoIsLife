@@ -1,0 +1,21 @@
+{
+  "name": "SoIsLife",
+  "version": "0.0.1",
+  "description": "A dev game",
+  "main": "www/index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Max Berends",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-compass": "^2.1.0",
+    "gulp-sass": "^2.1.1"
+  },
+  "dependencies": {
+    "jquery": "^2.1.4",
+    "requirejs": "^2.1.22",
+    "three.js": "^0.73.0"
+  }
+}
