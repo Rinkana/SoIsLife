@@ -4,11 +4,17 @@ define(['three', 'scene', 'material'], function (THREE, scene, material) {
 
     var loadModel = function () {
         loader.load("/models/floor-0-0.js", function (geometry) {
-            geometry.scale(200,200,200);
+            geometry.scale(50,50,50);
+
+            var mesh = new THREE.Mesh( geometry, material.floor );
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+
             var object = new THREE.Object3D();
-            object.add(new THREE.Mesh( geometry, material.floor ));
+            object.add(mesh);
             object.position.y -= 100;
-            console.log(object.position);
+            object.castShadow = true;
+            object.receiveShadow = true;
             scene.add(object);
             objects.push(object);
         });

@@ -6,6 +6,9 @@ define(["jquery", "three", "container"], function ($, THREE, container) {
         renderer.setSize(container.offsetWidth, container.offsetHeight);
     };
 
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
     $(window).resize(updateSize);
     updateSize();
 

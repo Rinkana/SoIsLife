@@ -2,8 +2,6 @@ define(["three","scene"],function(THREE,scene){
     var sky = new THREE.Sky();
     scene.add(sky.mesh);
 
-    console.log(sky.mesh);
-
     var distance = 40000;
 
     var inclination = 0.33,

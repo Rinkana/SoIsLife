@@ -3,19 +3,26 @@ define(["three", "scene"], function (THREE, scene) {
     scene.add(ambient);
 
     var light = new THREE.DirectionalLight(0xffffff);
-    light.position.set(-19, 26, 55);
+    //light.position.set(-19, 26, 55);
+    light.position.set(75, 65, -75);
+    light.shadowCameraNear = 0;
+    light.intensity = 1;
+
     light.castShadow = true;
+    light.shadowDarkness = 0.5;
+    light.shadowCameraRight = 1000;
+    light.shadowCameraLeft = -1000;
+    light.shadowCameraTop = 1000;
+    light.shadowCameraBottom = -1000;
+    light.shadowBias = 0.0001;
+    light.shadowMapWidth = 2048;
+    light.shadowMapHeight = 2048;
+
     scene.add(light);
 
-    var light2 = new THREE.DirectionalLight(0xffffff);
-    light2.intensity = 0.5;
-    light2.position.set(-30, 26, -90);
-    light2.castShadow = true;
-    scene.add(light2);
 
     return {
         ambient:ambient,
-        main:light,
-        helper:light2
+        main:light
     };
 });

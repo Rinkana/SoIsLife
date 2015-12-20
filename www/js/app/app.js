@@ -9,11 +9,13 @@ define([
     'renderer',
     'scene',
     'loader',
-    'sky'
-], function ($, THREE, camera, controls, geometry, lights, material, renderer, scene, loader, sky) {
+    'sky',
+    'debug'
+], function ($, THREE, camera, controls, geometry, lights, material, renderer, scene, loader, sky, debug) {
     var initialize = function () {
         loader.loadModel();
 
+        debug.enable();
     };
 
     var animate = function(){
