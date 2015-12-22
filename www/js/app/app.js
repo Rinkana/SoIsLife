@@ -13,7 +13,12 @@ define([
     'debug'
 ], function ($, THREE, camera, controls, geometry, lights, material, renderer, scene, loader, sky, debug) {
     var initialize = function () {
-        loader.loadModel();
+        //Size of object = 30
+        //Object will by a factor 50 making it 1500
+        loader.loadModel(0,-100,0);
+        loader.loadModel(1500,-100,0);
+
+        loader.loadModel(0,-100,1500);
 
         debug.enable();
     };
