@@ -15,10 +15,13 @@ define([
     var initialize = function () {
         //Size of object = 30
         //Object will by a factor 50 making it 1500
-        loader.loadModel(0,-100,0);
-        loader.loadModel(1500,-100,0);
+        loader.loadModel(0,0,0);
+        loader.loadModel(0,0,1);
+        loader.loadModel(3,0,3);
+        loader.loadModel(4,0,4);
 
-        loader.loadModel(0,-100,1500);
+
+        //loader.loadModel(0,0,30);
 
         debug.enable();
     };
