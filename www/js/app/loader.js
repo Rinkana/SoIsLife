@@ -6,10 +6,13 @@ define(['three', 'scene', 'material'], function (THREE, scene, material) {
         x = ( typeof x == "undefined" ? 0 : x );
         y = ( typeof x == "undefined" ? 0 : y );
         z = ( typeof x == "undefined" ? 0 : z );
-        loader.load("/models/floor-"+x+"-"+z+".js", function (geometry) {
+        loader.load("/models/"+x+"-"+z+".js", function (geometry) {
             //geometry.scale(50,50,50);
-            x *= 30;
-            z *= 30;
+            x = parseInt(x.substr(1));
+            z = parseInt(z.substr(1));
+
+            x = 0;
+            z = 0;
             var mesh = new THREE.Mesh( geometry, material.floor );
             mesh.castShadow = true;
             mesh.receiveShadow = true;
@@ -19,6 +22,7 @@ define(['three', 'scene', 'material'], function (THREE, scene, material) {
             var object = new THREE.Object3D();
             object.add(mesh);
             object.position.set(x,y,z);
+            console.log(object.position);
             object.castShadow = true;
             object.receiveShadow = true;
             scene.add(object);
