@@ -1,3 +1,8 @@
+/**
+ * Debug file with debug options
+ *
+ * Todo: how do i call this from the developer console?
+ */
 define(['jquery','three','lights','scene'],function($,THREE,lights,scene){
 
     var enable = function(){

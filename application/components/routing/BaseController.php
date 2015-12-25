@@ -8,8 +8,15 @@
 
 namespace routing;
 
+use web\Request;
+
 abstract class BaseController
 {
+    /**
+     * @var Request
+     */
+    protected $request;
+
     public final function __construct()
     {
 

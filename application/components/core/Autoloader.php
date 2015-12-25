@@ -22,11 +22,24 @@ class Autoloader
         }
     }
 
+    /**
+     * Add a new path to the autoloader
+     *
+     * @param $path
+     * @return $this
+     */
     public function add($path){
         $this->includePaths[] = $path;
         return $this;
     }
 
+    /**
+     *
+     * Register the autoloader to the autoload stack.
+     * All autoloaders will be appended.
+     *
+     * @return bool
+     */
     public function register()
     {
         $paths = get_include_path().PATH_SEPARATOR;
@@ -39,6 +52,12 @@ class Autoloader
         return spl_autoload_register(array('static', 'loadClass'));
     }
 
+    /**
+     * Find a class within this autoloader paths
+     *
+     * @param $class
+     * @return bool
+     */
     public static function loadClass($class)
     {
         $class = self::normalize($class);
@@ -57,6 +76,13 @@ class Autoloader
         return false;
     }
 
+    /**
+     *
+     * Get the correct filename for the requested class
+     *
+     * @param $class
+     * @return string
+     */
     public static function normalize($class)
     {
         $file = '';

@@ -61,6 +61,14 @@ class Route
     }
 
     /**
+     *
+     * Set the callback for when the route is found correct.
+     *
+     * Use [controller]|[method] to call a controller. Just use the controller name.
+     * Example: Script|get
+     *
+     * Notice that there is no "Controller" after "Script"
+     *
      * @param string|callable $callback
      * @return $this
      */
@@ -85,6 +93,13 @@ class Route
         return $this;
     }
 
+    /**
+     *
+     * Run the callback with extra parameters
+     *
+     * @param Request $request
+     * @param array $parameters
+     */
     public function call(Request $request, array $parameters){
 
         if(is_callable($this->callback)){
@@ -110,6 +125,14 @@ class Route
         return $this;
     }
 
+    /**
+     *
+     * Parse the route string to it will filter out the requested parameters and replace them with an regex.
+     *
+     * You can use your own pattern in the constaints
+     *
+     * @return string
+     */
     public function parseRoute()
     {
         $routeParts = $this->getRouteParts();
@@ -133,8 +156,12 @@ class Route
     }
 
     /**
+     *
+     * Create a new GET route.
+     * This will return itself so it can be chained
+     *
      * @param $routeUrl
-     * @param $controller
+     * @param $callback
      * @return Route
      */
     public static function get($routeUrl, $callback)

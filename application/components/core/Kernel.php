@@ -26,6 +26,9 @@ class Kernel
         $this->run();
     }
 
+    /**
+     * Set the core requred vars
+     */
     public function setVars()
     {
 
@@ -33,6 +36,9 @@ class Kernel
 
     }
 
+    /**
+     * Init done? Continue to the deeper layers for the output.
+     */
     public function run(){
         $router = new Router();
         $router->route($this->request);

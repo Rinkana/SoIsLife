@@ -1,3 +1,6 @@
+/**
+ * Core application handling
+ */
 define([
     'jquery',
     'three',

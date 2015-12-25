@@ -1,3 +1,6 @@
+/**
+ * Load the renderer
+ */
 define(["jquery", "three", "container"], function ($, THREE, container) {
     var renderer = new THREE.WebGLRenderer({antialias: true});
     container.appendChild(renderer.domElement);
@@ -7,7 +10,7 @@ define(["jquery", "three", "container"], function ($, THREE, container) {
     };
 
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
 
     $(window).resize(updateSize);
     updateSize();

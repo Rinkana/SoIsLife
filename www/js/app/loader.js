@@ -1,3 +1,9 @@
+/**
+ * Load models
+ *
+ * Todo: Split the geometry handling from this file
+ * Todo: Add other loaders
+ */
 define(['three', 'scene', 'material'], function (THREE, scene, material) {
     var loader = new THREE.JSONLoader();
     var objects = [];
@@ -14,6 +20,8 @@ define(['three', 'scene', 'material'], function (THREE, scene, material) {
             x = 0;
             z = 0;
             var mesh = new THREE.Mesh( geometry, material.floor );
+            mesh.position.set(0,0,0);
+            console.log(mesh);
             mesh.castShadow = true;
             mesh.receiveShadow = true;
             mesh.doubleSided = false;

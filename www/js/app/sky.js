@@ -1,3 +1,7 @@
+/**
+ * Load setup the sky env.
+ * Notice that you also need to set the camera distance futher away to make this work
+ */
 define(["three","scene"],function(THREE,scene){
     var sky = new THREE.Sky();
     scene.add(sky.mesh);

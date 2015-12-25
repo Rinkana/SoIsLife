@@ -12,6 +12,14 @@ namespace core;
 class Config
 {
     /**
+     *
+     * Get a config value.
+     * To request a full file array just give the filename.
+     *
+     * To get a specific value from that file append a dot (.) and the key you want to get.
+     *
+     * Todo: Cache?
+     *
      * @param $var
      * @return mixed
      * @throws ConfigFileNotFoundException

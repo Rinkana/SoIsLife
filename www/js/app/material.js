@@ -1,3 +1,10 @@
+/**
+ * Get the materials
+ *
+ * Todo: load trough textureloader
+ * Todo: Better caching
+ *
+ */
 define(["three"], function (THREE) {
     return {
         floor: new THREE.MeshPhongMaterial({

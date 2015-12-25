@@ -25,6 +25,12 @@ class Router
         $this->routes = Config::get("routes");
     }
 
+    /**
+     *
+     * Find and call the correct route
+     *
+     * @param Request $request
+     */
     public function route(Request $request)
     {
 
@@ -41,54 +47,6 @@ class Router
 
     }
 
-    private function findController(){
-
-    }
-
-    protected function check($url)
-    {
-        foreach ($this->routes as $route) {
-            var_dump($route->parseRoute());
-        }
-    }
-
-    /**
-     * @param $routePath
-     * @param $routeConfig
-     * @return array
-     */
-    protected function parseRoute($routePath, $routeConfig)
-    {
-        $routeParts = array_filter(explode("/", $routePath));
-        $parameters = [];
-
-        array_walk(
-            $routeParts,
-            function (&$routePart) use ($routeConfig) {
-                if (substr($routePart, 0, 1) == ":") {
-                    //Part is parameter
-                    $pattern = '([a-zA-Z0-9\-\_]+)';
-                    $parameterName = substr($routePart, 1);
-
-                    if (in_array($parameterName, $routeConfig)) {
-
-                    } else {
-                        throw new RouteNotValidException();
-                    }
-
-                    $parameters[] = $parameterName;
-                    $routePart = $pattern;
-                } else {
-                    $routePart = preg_quote($routePart);
-                }
-            }
-        );
-
-        return [
-            "pattern" => "@^/".implode("/", $routeParts)."$@D",
-            "parameters" => $parameters,
-        ];
-    }
 }
 
 class RouteNotValidException extends \Exception

@@ -9,6 +9,14 @@
 use \routing\BaseController;
 class ScriptController extends BaseController
 {
+    /**
+     * Load a script file
+     *
+     * Todo: load from database
+     * Todo: return 404 when not found
+     *
+     * @param $script
+     */
     public function get($script){
         if(file_exists(ROOT."node_modules/".$script)){
             readfile(ROOT."node_modules/".$script);

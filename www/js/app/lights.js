@@ -1,3 +1,6 @@
+/**
+ * Setup the lights being used within this scene
+ */
 define(["three", "scene"], function (THREE, scene) {
     //var hemisphere = new THREE.HemisphereLight( 0xffffff, 0xffffff, 10 );
     //hemisphere.color.setRGB( 153, 191, 127 );
