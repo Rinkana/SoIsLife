@@ -14,11 +14,11 @@ define(['three', 'scene', 'material'], function (THREE, scene, material) {
         z = ( typeof x == "undefined" ? 0 : z );
         loader.load("/models/"+x+"-"+z+".js", function (geometry) {
             //geometry.scale(50,50,50);
-            x = parseInt(x.substr(1));
-            z = parseInt(z.substr(1));
+            x = parseInt(x.substr(1)) * 10;
+            z = parseInt(z.substr(1)) * 10;
 
-            x = 0;
-            z = 0;
+            //x = 0;
+            //z = 0;
             var mesh = new THREE.Mesh( geometry, material.floor );
             mesh.position.set(0,0,0);
             console.log(mesh);
@@ -36,6 +36,10 @@ define(['three', 'scene', 'material'], function (THREE, scene, material) {
             scene.add(object);
             objects.push(object);
         });
+    };
+
+    var loadHeightMap = function(image){
+
     };
 
     var getObjects = function(){
