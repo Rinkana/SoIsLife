@@ -5,14 +5,16 @@
  * Todo: Add other loaders
  */
 define(['three', 'scene', 'material'], function (THREE, scene, material) {
-    var loader = new THREE.JSONLoader();
+    var modelLoader = new THREE.JSONLoader();
+    var textureLoader = new THREE.TextureLoader();
     var objects = [];
+    var textures = [];
 
     var loadModel = function (x,y,z) {
         x = ( typeof x == "undefined" ? 0 : x );
         y = ( typeof x == "undefined" ? 0 : y );
         z = ( typeof x == "undefined" ? 0 : z );
-        loader.load("/models/"+x+"-"+z+".js", function (geometry) {
+        modelLoader.load("/models/"+x+"-"+z+".js", function (geometry) {
             //geometry.scale(50,50,50);
             x = parseInt(x.substr(1)) * 10;
             z = parseInt(z.substr(1)) * 10;
@@ -38,8 +40,10 @@ define(['three', 'scene', 'material'], function (THREE, scene, material) {
         });
     };
 
-    var loadHeightMap = function(image){
-
+    var loadTexture = function(texture){
+        //textureLoader.load(texture,function(texture){
+        //    console.log(texture);
+        //});
     };
 
     var getObjects = function(){
@@ -47,8 +51,10 @@ define(['three', 'scene', 'material'], function (THREE, scene, material) {
     };
 
     return {
-        getObjects:getObjects,
+        getObjects: getObjects,
         loadModel: loadModel,
-        loader: loader
+        loadTexture:loadTexture,
+        modelLoader: modelLoader,
+        textureLoader: textureLoader
     };
 });

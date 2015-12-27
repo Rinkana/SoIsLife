@@ -13,7 +13,7 @@ define(["three"], function (THREE) {
             specular: 0xffffff,
             shading: THREE.FlatShading,
             shininess: 1,
-            side: THREE.DoubleSide
+            side: THREE.FrontSide
         })
     }
 });

@@ -4,17 +4,18 @@
 define([
     'jquery',
     'three',
+    'loader',
     'camera',
     'controls',
     'geometry',
+    'texture',
     'lights',
     'material',
     'renderer',
     'scene',
-    'loader',
     'sky',
     'debug'
-], function ($, THREE, camera, controls, geometry, lights, material, renderer, scene, loader, sky, debug) {
+], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, sky, debug) {
     var initialize = function () {
 
 
@@ -32,23 +33,36 @@ define([
 
         //loader.loadModel(0,0,30);
 
-        var planeGeo = new THREE.PlaneGeometry(4096,4096);
-        var plane = new THREE.Mesh(planeGeo,material.floor);
-        plane.rotation.set(-Math.PI/2, Math.PI/2000, Math.PI);
-        scene.add(plane);
+        texture.load(["/images/heightmaps/terrain.png"],function(){
+            console.log(texture.get("terrain"));
+            var floorMaterial = material.floor;
+            floorMaterial.displacementMap = texture.get("terrain");
+            floorMaterial.displacementScale = 1024;
+            //floorMaterial.wireframe = true;
+
+            var planeGeo = new THREE.PlaneGeometry(8192, 8192,200,200);
+            //console.log(planeGeo);
+            var plane = new THREE.Mesh(planeGeo, floorMaterial);
+            plane.rotation.set(-Math.PI / 2, Math.PI / 2000, Math.PI);
+            plane.position.y -= 500;
+            scene.add(plane);
+        });
+
+
+
 
         debug.enable();
     };
 
-    var animate = function(){
-        window.requestAnimationFrame( animate );
+    var animate = function () {
+        window.requestAnimationFrame(animate);
         controls.update();
         //controls.handlePosition();
-        renderer.render( scene, camera );
+        renderer.render(scene, camera);
     };
 
     return {
         initialize: initialize,
-        animate:animate
+        animate: animate
     }
 });
