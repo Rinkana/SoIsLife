@@ -14,8 +14,9 @@ define([
     'renderer',
     'scene',
     'sky',
+    "mesh",
     'debug'
-], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, sky, debug) {
+], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, sky, mesh, debug) {
     var initialize = function () {
 
 
@@ -33,14 +34,20 @@ define([
 
         //loader.loadModel(0,0,30);
 
-        texture.load(["/images/heightmaps/terrain.png"],function(){
-            console.log(texture.get("terrain"));
+        texture.load(["/images/heightmaps/terrain.png","/images/textures/grass.jpg"],function(){
+            console.log(texture.get("grass"));
             var floorMaterial = material.floor;
             floorMaterial.displacementMap = texture.get("terrain");
             floorMaterial.displacementScale = 1024;
+            var grassTexture = texture.get("grass");
+            grassTexture.repeat.set( 20, 20 );
+            grassTexture.wrapS = THREE.RepeatWrapping;
+            grassTexture.wrapT = THREE.RepeatWrapping;
+            floorMaterial.bumpMap = grassTexture;
+            floorMaterial.map = grassTexture;
             //floorMaterial.wireframe = true;
 
-            var planeGeo = new THREE.PlaneGeometry(8192, 8192,200,200);
+            var planeGeo = new THREE.PlaneGeometry(8192, 8192,20,20);
             //console.log(planeGeo);
             var plane = new THREE.Mesh(planeGeo, floorMaterial);
             plane.rotation.set(-Math.PI / 2, Math.PI / 2000, Math.PI);
@@ -51,7 +58,7 @@ define([
 
 
 
-        debug.enable();
+        //debug.enable();
     };
 
     var animate = function () {

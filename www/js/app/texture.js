@@ -3,7 +3,6 @@
  */
 define(["jquery","three","loader"],function($,THREE,loader){
     var textures = {};
-    var busy = false;
 
     var set = function(name,object){
         textures[name] = object;
@@ -24,9 +23,7 @@ define(["jquery","three","loader"],function($,THREE,loader){
         var filename = file.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, "");
         loader.textureLoader.load(file,function(texture){
             set(filename,texture);
-            if(typeof callback == "function"){
-                callback();
-            }
+            (typeof callback == "function" ? callback() : null );
         });
     };
 
@@ -46,7 +43,6 @@ define(["jquery","three","loader"],function($,THREE,loader){
             }
 
         }else if(typeof file == "string"){
-            console.log(file);
             loadTexture(file,callback);
         }
 
@@ -57,7 +53,6 @@ define(["jquery","three","loader"],function($,THREE,loader){
     return {
         get:get,
         set:set,
-        load:load,
-        busy:busy
+        load:load
     };
 });
