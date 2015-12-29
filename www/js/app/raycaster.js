@@ -1,8 +1,19 @@
 /**
- * Setup an raycaster for collision detaction
+ * Setup an raycaster for collision detection
  */
-define(["three"],function(){
-    var raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+define(["three","camera","mesh"],function(THREE,camera,mesh){
+    var raycaster = new THREE.Raycaster(  );
 
-    return raycaster;
+    var intersectByVector = function(vector,objects){
+        objects = (typeof objects == "undefined" ? [mesh.get("floor")] : objects);
+
+        raycaster.setFromCamera(vector, camera);
+
+        return raycaster.intersectObjects(objects);
+    };
+
+    return {
+        raycaster:raycaster,
+        intersectByVector:intersectByVector
+    };
 });

@@ -13,10 +13,13 @@ define([
     'material',
     'renderer',
     'scene',
-    'sky',
-    "mesh",
+    //'sky',
+    'mesh',
+    'raycaster',
+    'projector',
+    'position',
     'debug'
-], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, sky, mesh, debug) {
+], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, /*sky,*/ mesh, raycaster, projector, position, debug) {
     var initialize = function () {
 
 
@@ -43,27 +46,34 @@ define([
             grassTexture.repeat.set( 20, 20 );
             grassTexture.wrapS = THREE.RepeatWrapping;
             grassTexture.wrapT = THREE.RepeatWrapping;
-            floorMaterial.bumpMap = grassTexture;
-            floorMaterial.map = grassTexture;
+            //floorMaterial.bumpMap = grassTexture;
+            //floorMaterial.map = grassTexture;
             //floorMaterial.wireframe = true;
 
             var planeGeo = new THREE.PlaneGeometry(8192, 8192,20,20);
+            planeGeo.computeVertexNormals();
             //console.log(planeGeo);
             var plane = new THREE.Mesh(planeGeo, floorMaterial);
+            plane.castShadow = true;
+            plane.receiveShadow = true;
             plane.rotation.set(-Math.PI / 2, Math.PI / 2000, Math.PI);
             plane.position.y -= 500;
-            scene.add(plane);
+
+            mesh.set("floor",plane);
+
+            scene.add(mesh.get("floor"));
         });
 
 
 
 
-        //debug.enable();
+        debug.enable();
     };
 
     var animate = function () {
         window.requestAnimationFrame(animate);
         controls.update();
+        position.move();
         //controls.handlePosition();
         renderer.render(scene, camera);
     };

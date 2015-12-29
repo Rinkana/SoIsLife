@@ -4,19 +4,31 @@
  * Todo: how do i call this from the developer console?
  */
 define(['jquery','three','lights','scene'],function($,THREE,lights,scene){
+    var enabled = false;
 
     var enable = function(){
+        enabled = true;
         $.each(lights, function(i,light){
-            var marker = new THREE.Mesh(new THREE.SphereGeometry(200), new THREE.MeshLambertMaterial({color: 0xff0000}));
-            marker.position.copy(light.position);
-            scene.add(marker);
+
+            addMarker(light.position.x,light.position.y,light.position.z);
             if(light.castShadow){
                 scene.add(new THREE.CameraHelper(light.shadow.camera));
             }
         });
     };
 
+    var addMarker = function(x,y,z){
+        if(enabled){
+            var marker = new THREE.Mesh(new THREE.SphereGeometry(200), new THREE.MeshLambertMaterial({color: 0xff0000}));
+            marker.position.x = x;
+            marker.position.y = y;
+            marker.position.z = z;
+            scene.add(marker);
+        }
+    };
+
     return {
-        enable:enable
+        enable:enable,
+        addMarker:addMarker
     };
 });

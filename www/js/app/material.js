@@ -12,6 +12,7 @@ define(["three"], function (THREE) {
             emissive: 0x000000,//0xFF8040
             specular: 0xffffff,
             shading: THREE.FlatShading,
+            vertexColors: THREE.FaceColors,
             shininess: 1,
             side: THREE.FrontSide
         })

@@ -11,6 +11,10 @@ define(["jquery","three","geometry","material"],function($,THREE,geometry,materi
 
     var get = function(name){
         //Todo: not found object
+        if(typeof name == "undefined"){
+            return meshes;
+        }
+
         return meshes[name];
     };
     
