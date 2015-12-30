@@ -1,18 +1,12 @@
 require.config({
     baseUrl: 'js/app',
     shim: {
-        'threeCore': {exports: "THREE"},
-        'OrbitControls': {deps: ['threeCore'], exports: "THREE"},
-        'PointerLockControls': {deps: ['threeCore'], exports: "THREE"},
-        'SkyShader': {deps: ['threeCore'], exports: "THREE"}
+        'babylonCore':{exports:"BABYLON"}
     },
     paths: {
         jquery: "/scripts/jquery/dist/jquery",
-        threeCore: "/scripts/three.js/build/three.min",
-        OrbitControls: "../lib/three/OrbitControls",
-        PointerLockControls: "../lib/three/PointerLockControls",
-        SkyShader: "../lib/three/SkyShader",
-        three: "../lib/three/three"
+        babylonCore:"/scripts/babylonjs/babylon",
+        babylon:"../lib/babylon/babylon"
     }
 });
 
@@ -22,5 +16,4 @@ require([
 ], function (App) {
     // The "app" dependency is passed in as "App"
     App.initialize();
-    App.animate();
 });

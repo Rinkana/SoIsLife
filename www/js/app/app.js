@@ -3,25 +3,29 @@
  */
 define([
     'jquery',
-    'three',
-    'loader',
+    'babylon',
+    'container',
+    'scene',
     'camera',
-    'controls',
-    'geometry',
-    'texture',
     'lights',
     'material',
-    'renderer',
-    'scene',
-    //'sky',
-    'mesh',
-    'raycaster',
-    'projector',
-    'position',
+    'texture',
+    'geometry',
+    'engine',
     'debug'
-], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, /*sky,*/ mesh, raycaster, projector, position, debug) {
+], function ($, BABYLON, container, scene, camera, lights, material, texture, geometry ,engine, debug) {
     var initialize = function () {
 
+        geometry.set("sphere", BABYLON.Mesh.CreateSphere("sphere", 16, 2, scene));
+        geometry.set("ground", BABYLON.Mesh.CreateGround("ground",6,6,2,scene));
+        material.set("floor", new BABYLON.StandardMaterial("floor", scene));
+        texture.load("/images/textures/grass.jpg");
+
+        geometry.get("sphere").position.y = 1;
+        geometry.get("sphere").material = material.get("floor");
+        geometry.get("ground").material = material.get("floor");
+        material.get("floor").diffuseColor = new BABYLON.Color3(0,1.5,0);
+        material.get("floor").diffuseTexture = texture.get("grass");
 
         //Size of object = 30
         //Object will by a factor 50 making it 1500
@@ -36,7 +40,7 @@ define([
 
 
         //loader.loadModel(0,0,30);
-
+/*
         texture.load(["/images/heightmaps/terrain.png","/images/textures/grass.jpg"],function(){
             console.log(texture.get("grass"));
             var floorMaterial = material.floor;
@@ -62,24 +66,25 @@ define([
             mesh.set("floor",plane);
 
             scene.add(mesh.get("floor"));
-        });
+        });*/
 
+        //debug.enable();
 
-
-
-        debug.enable();
+        engine.runRenderLoop(renderLoop);
     };
 
-    var animate = function () {
+    var renderLoop = function () {
+        scene.render();
+        /*
         window.requestAnimationFrame(animate);
         controls.update();
         position.move();
         //controls.handlePosition();
-        renderer.render(scene, camera);
+        renderer.render(scene, camera);*/
     };
 
     return {
         initialize: initialize,
-        animate: animate
+        renderLoop: renderLoop
     }
 });

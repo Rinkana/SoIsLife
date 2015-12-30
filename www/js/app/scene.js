@@ -1,7 +1,7 @@
 /**
  * Setup the scene
  */
-define(["three"],function(THREE){
-    var scene = new THREE.Scene();
+define(["babylon","engine"],function(BABYLON, engine){
+    var scene = new BABYLON.Scene(engine);
     return scene;
 });

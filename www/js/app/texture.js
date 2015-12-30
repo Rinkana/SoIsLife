@@ -1,7 +1,7 @@
 /**
  * Todo: use this for geometry handling and caching
  */
-define(["jquery","three","loader"],function($,THREE,loader){
+define(["jquery","babylon","scene"],function($,BABYLON,scene){
     var textures = {};
 
     var set = function(name,object){
@@ -18,35 +18,25 @@ define(["jquery","three","loader"],function($,THREE,loader){
         }
     };
 
-    var loadTexture = function(file, callback){
+    var loadTexture = function(file){
         //Todo: one regex?
         var filename = file.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, "");
-        loader.textureLoader.load(file,function(texture){
-            set(filename,texture);
-            (typeof callback == "function" ? callback() : null );
-        });
+        var texture = new BABYLON.Texture(file, scene);
+        set(filename,texture);
     };
 
     var load = function(file, callback){
 
         if(typeof file == "object"){
-            if(file.length == 1){
-                //We only have one item in the array. So we run just that one. No need for the shift.
-                //The callback will be done there
-                file = file[0];
-                load(file,callback);
-            }else{
-                var fileToLoad = file.shift();
-                loadTexture(fileToLoad,function(){
-                    load(file,callback);
-                });
-            }
+
+            $.each(file,function(i,file){
+                loadTexture(file);
+            });
 
         }else if(typeof file == "string"){
-            loadTexture(file,callback);
+            loadTexture(file);
         }
-
-        //file
+        (typeof callback == "function" ? callback() : null);
 
     };
 
