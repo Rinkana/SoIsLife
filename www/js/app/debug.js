@@ -8,6 +8,7 @@ define(['jquery','scene'],function($,scene){
 
     var enable = function(){
         enabled = true;
+        scene.debugLayer.show();
     };
 
     var addMarker = function(x,y,z){
