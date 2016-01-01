@@ -13,27 +13,44 @@ define([
     'geometry',
     'player',
     'engine',
+    'utils',
     'debug'
-], function ($, BABYLON, container, scene, camera, lights, material, texture, geometry,player ,engine, debug) {
+], function ($, BABYLON, container, scene, camera, lights, material, texture, geometry,player ,engine, utils, debug) {
     var initialize = function () {
 
         geometry.set("sphere", BABYLON.Mesh.CreateSphere("sphere", 16, 2, scene));
-
-        geometry.set("ground", BABYLON.Mesh.CreateGroundFromHeightMap("ground", "/images/heightmaps/terrain.png", 500, 500, 50, -20, 20, scene, false));
+        geometry.set("ground", BABYLON.Mesh.CreateGroundFromHeightMap("ground", "/images/heightmaps/terrain4.png", 2000, 2000, 500, 0, 40, scene, false));
+        geometry.set("water", BABYLON.Mesh.CreatePlane("water", 2000, scene));
         material.set("floor", new BABYLON.StandardMaterial("floor", scene));
+        material.set("water", new BABYLON.StandardMaterial("water", scene));
         texture.load("/images/textures/grass.jpg");
         //texture.load("/images/heightmaps/terrain.png");
 
+
+        //material.get("floor").diffuseTexture = texture.get("grass");
+        //material.get("floor").diffuseTexture.uScale = 100.0;
+        //material.get("floor").diffuseTexture.vScale = 100.0;
+        //material.get("floor").wireframe = true;
+        material.get("floor").diffuseColor = new BABYLON.Color3.FromInts(18,41,5);
+        material.get("floor").specularColor = new BABYLON.Color3.FromInts(25,25,25);
+        material.get("floor").specularPower = 100;
+
+        material.get("water").diffuseColor = new BABYLON.Color3.FromInts(10,110,140);
+        //material.get("floor").specularColor = utils.RGBColor(41,144,179);
+        material.get("water").specularPower = 100;
+
+        geometry.get("water").rotation.x= Math.PI / 2;
+        geometry.get("water").position.y -= 1;
         geometry.get("sphere").position.y = 1;
         geometry.get("sphere").material = material.get("floor");
         geometry.get("ground").material = material.get("floor");
+        geometry.get("water").material = material.get("water");
+        geometry.get("ground").position.y -= 27;
+        geometry.get("ground").receiveShadow = true;
+        console.log(geometry.get("ground"));
+        //geometry.get("water").convertToFlatShadedMesh();
         //geometry.get("ground").applyDisplacementMap("/images/heightmaps/terrain.png",0,10);
         //material.get("floor").diffuseColor = new BABYLON.Color3(0,1.5,0);
-        material.get("floor").diffuseTexture = texture.get("grass");
-        material.get("floor").diffuseTexture.uScale = 10.0;
-        material.get("floor").diffuseTexture.vScale = 10.0;
-        material.get("floor").specularColor = new BABYLON.Color3(0.01,0.01,0.01);
-        material.get("floor").specularPower = 100;
 
 
         //Size of object = 30
