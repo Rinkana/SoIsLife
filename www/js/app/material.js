@@ -9,12 +9,18 @@ define(["three"], function (THREE) {
     };
 
     var set = function(name,object){
+        if(object.name == ""){
+            object.name = name;
+        }
         console.log(name,object);
         materials[name] = object;
     };
 
     var get = function(name){
         //Todo: not found object
+        if(typeof name == "undefined"){
+            return materials;
+        }
         return materials[name];
     };
 

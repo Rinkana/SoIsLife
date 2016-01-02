@@ -8,7 +8,8 @@ require.config({
         jquery: "/scripts/jquery/dist/jquery",
         threeCore: "/scripts/three.js/build/three.min",
         OrbitControls: "../lib/three/OrbitControls",
-        three: "../lib/three/three"
+        three: "../lib/three/three",
+        dat: "/scripts/exdat/build/dat.gui.min"
     }
 });
 

@@ -3,11 +3,17 @@
  */
 define(["three", "scene"], function (THREE, scene) {
 
-    var light = new THREE.AmbientLight(0x404040);
+    var ambient = new THREE.AmbientLight(0x404040);
+    scene.add( ambient );
+
+    var light = new THREE.DirectionalLight(0xffffff,1);
+    light.position.y += 2000;
+
     scene.add( light );
 
     return {
         //hemisphere:hemisphere,
+        ambient:ambient,
         main:light
     };
 });
