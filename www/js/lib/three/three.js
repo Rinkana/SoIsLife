@@ -3,6 +3,6 @@
  *
  * Please add all addins here (and the main.js)
  */
-define(["babylonCore"], function (babylonCore) {
-    return babylonCore;
+define(["threeCore","OrbitControls"], function (threeCore) {
+    return threeCore;
 });

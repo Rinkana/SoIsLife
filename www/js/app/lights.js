@@ -1,9 +1,10 @@
 /**
  * Setup the lights being used within this scene
  */
-define(["babylon", "scene"], function (BABYLON, scene) {
+define(["three", "scene"], function (THREE, scene) {
 
-    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0,100,0), scene);
+    var light = new THREE.AmbientLight(0x404040);
+    scene.add( light );
 
     return {
         //hemisphere:hemisphere,

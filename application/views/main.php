@@ -6,6 +6,6 @@
     <link rel="stylesheet" href="css/main.css" type="text/css" media="all">
 </head>
 <body>
-<canvas id="canvas"></canvas>
+<div id="container"></div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 /**
  * Todo: use this for geometry handling and caching
  */
-define(["jquery","babylon","scene"],function($,BABYLON,scene){
+define(["jquery","three","loader"],function($,THREE,loader){
     var geometries = {
     };
 

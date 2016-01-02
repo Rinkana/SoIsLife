@@ -3,7 +3,7 @@
  *
  *
  */
-define(["babylon","scene"], function (BABYLON, scene) {
+define(["three"], function (THREE) {
 
     var materials = {
     };

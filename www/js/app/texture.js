@@ -1,48 +1,57 @@
 /**
  * Todo: use this for geometry handling and caching
  */
-define(["jquery","babylon","scene"],function($,BABYLON,scene){
+define(["jquery", "three", "loader"], function ($, THREE, loader) {
     var textures = {};
 
-    var set = function(name,object){
+    var set = function (name, object) {
         textures[name] = object;
     };
 
-    var get = function(name){
+    var get = function (name) {
 
-        if(typeof name == "undefined"){
+        if (typeof name == "undefined") {
             return textures;
-        }else{
+        } else {
             //Todo: not found object
             return textures[name];
         }
     };
 
-    var loadTexture = function(file){
+    var loadTexture = function (file, callback) {
         //Todo: one regex?
         var filename = file.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, "");
-        var texture = new BABYLON.Texture(file, scene);
-        set(filename,texture);
+        loader.textureLoader.load(file, function (texture) {
+            set(filename, texture);
+            (typeof callback == "function" ? callback() : null );
+        });
     };
 
-    var load = function(file, callback){
+    var load = function (file, callback) {
 
-        if(typeof file == "object"){
+        if (typeof file == "object") {
 
-            $.each(file,function(i,file){
-                loadTexture(file);
-            });
+            if (file.length == 1) {
+                //We only have one item in the array. So we run just that one. No need for the shift.
+                //The callback will be done there
+                file = file[0];
+                load(file, callback);
+            } else {
+                var fileToLoad = file.shift();
+                loadTexture(fileToLoad, function () {
+                    load(file, callback);
+                });
+            }
 
-        }else if(typeof file == "string"){
-            loadTexture(file);
+        } else if (typeof file == "string") {
+            loadTexture(file, callback);
         }
-        (typeof callback == "function" ? callback() : null);
 
     };
 
     return {
-        get:get,
-        set:set,
-        load:load
+        get: get,
+        set: set,
+        load: load
     };
 });

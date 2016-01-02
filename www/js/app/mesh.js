@@ -6,6 +6,7 @@ define(["jquery","three","geometry","material"],function($,THREE,geometry,materi
     };
 
     var set = function(name,object){
+        console.log(name,object);
         meshes[name] = object;
     };
 

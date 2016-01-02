@@ -4,5 +4,5 @@
  * Todo: make this variable
  */
 define([],function(){
-    return document.getElementById("canvas");
+    return document.getElementById("container");
 });
