@@ -1,9 +1,7 @@
 /**
  * Debug file with debug options
  *
- * Todo: better callbacks, aka less writing
- * Todo: Lights
- * Todo: Better positioning (More folders?)
+ * TODO: Ability tu update after changes
  */
 define(['jquery','three','material','geometry','mesh','lights','scene',"dat"],function($,THREE,material,geometry,mesh,lights,scene,dat){
     var enabled = false;
@@ -12,13 +10,6 @@ define(['jquery','three','material','geometry','mesh','lights','scene',"dat"],fu
     var enable = function(){
         enabled = true;
         createOverlay();
-        /*$.each(lights, function(i,light){
-            console.log(light);
-            addMarker(light.position.x,light.position.y,light.position.z);
-            if(light.castShadow){
-                scene.add(new THREE.CameraHelper(light.shadow.camera));
-            }
-        });*/
     };
 
     var createOverlay = function(){
@@ -27,36 +18,66 @@ define(['jquery','three','material','geometry','mesh','lights','scene',"dat"],fu
 
         var overlaySettings = {
             "Mesh":meshToOverlay,
-            "Materials":materialToOverlay
+            "Materials":materialToOverlay,
+            "Lights": lightsToOverlay
         };
 
-        $.each(overlaySettings,function(mainName,mainData){
-            var mainFolder = overlay.addFolder(mainName);
+        guiLoop(overlaySettings,overlay);
 
-            $.each(mainData(),function(dataName,dataConfig){
-                var itemFolder = mainFolder.addFolder(dataName);
-                $.each(dataConfig,function(configName,config){
-                    var value = {};
-                    value[configName] = config.value;
-                    if(typeof config.value == "string" && config.value.indexOf("#") === 0){
-                        var guiItem = itemFolder.addColor(value,configName);
-                    }else{
-                        var opt1;
-                        var opt2;
-                        if(typeof config.min != "undefined"){opt1 = config.min}
-                        if(typeof config.max != "undefined"){opt2 = config.max}
-                        if(typeof config.options != "undefined"){opt1 = config.options}
+    };
 
-                        var guiItem = itemFolder.add(value,configName,opt1,opt2);
-                    }
+    var guiLoop = function(config,gui){
+        //Set object for any possible callback
+        var object;
+        if(typeof config.OBJECT != "undefined"){
+            object = config.OBJECT;
+            delete config.OBJECT;
+        }
 
-                    if(typeof config.onChange != "undefined"){
-                        guiItem.onChange(config.onChange);
-                    }
-                });
-            });
-        });
+        for( var key in config) {
+            if (!config.hasOwnProperty(key)) continue;
 
+            var configData = config[key];
+
+            //Functions are also allowed so we call it first for the result
+            if(typeof configData == "function"){configData = configData()}
+
+            if(typeof configData == "object" && typeof configData.value != "undefined"){
+                //Set possible GUI parameters
+                var opt1 = undefined;
+                var opt2 = undefined;
+                if(typeof configData.min != "undefined"){opt1 = configData.min}
+                if(typeof configData.max != "undefined"){opt2 = configData.max}
+                if(typeof configData.options != "undefined"){opt1 = configData.options}
+
+                //Create local value instance for the GUI
+                var value = {};
+                value[key] = configData.value;
+
+                if(typeof configData.value == "string" && configData.value.indexOf("#") === 0){
+                    //Type is color, need other notation
+                    var guiItem = gui.addColor(value,key);
+                }else{
+                    //Default
+                    var guiItem = gui.add(value,key,opt1,opt2);
+                }
+
+                if(typeof configData.step != "undefined"){guiItem.step(configData.step)}
+
+                if(typeof configData.onChange != "undefined"){
+                    //Auto fill callback if it is not set
+                    if(typeof configData.onChange["item"] == "undefined"){configData.onChange["item"] = object}
+                    if(typeof configData.onChange["option"] == "undefined"){configData.onChange["option"] = key}
+                    guiItem.onChange(updateItem.bind(configData.onChange));
+                }
+
+            }else if(typeof configData == "object"){
+                //Has no value, so we see it as a folder
+                var folder = gui.addFolder(key);
+                guiLoop(configData,folder);
+            }
+
+        }
     };
 
     var meshToOverlay = function(){
@@ -65,12 +86,84 @@ define(['jquery','three','material','geometry','mesh','lights','scene',"dat"],fu
 
         $.each(mesh.get(),function(name,meshItem){
             data[name] = {
-                "Position":{
-                    value:meshItem.position.toArray().join(),
-                    onChange:updateItem.bind({item:meshItem,option:"position",type:'vector'})
+                "OBJECT":meshItem,
+                "position":{
+                    "OBJECT":meshItem.position,
+                    x:{
+                        value:meshItem.position.x,
+                        onChange:{}
+                    },
+                    y:{
+                        value:meshItem.position.y,
+                        onChange:{}
+                    },
+                    z:{
+                        value:meshItem.position.z,
+                        onChange:{}
+                    }
                 },
-                "Material":{
+                "rotation":{
+                    "OBJECT":meshItem.rotation,
+                    x:{
+                        value:parseFloat(meshItem.rotation.x),
+                        min:-Math.PI,
+                        max:Math.PI,
+                        step:0.1,
+                        onChange:{}
+                    },
+                    y:{
+                        value:parseFloat(meshItem.rotation.y),
+                        min:-Math.PI,
+                        max:Math.PI,
+                        step:0.1,
+                        onChange:{}
+                    },
+                    z:{
+                        value:parseFloat(meshItem.rotation.z),
+                        min:-Math.PI,
+                        max:Math.PI,
+                        step:0.1,
+                        onChange:{}
+                    }
+                },
+                "scale":{
+                    "OBJECT":meshItem.scale,
+                    x:{
+                        value:meshItem.scale.x,
+                        min:-10,
+                        max:10,
+                        step:0.001,
+                        onChange:{}
+                    },
+                    y:{
+                        value:meshItem.scale.y,
+                        min:-10,
+                        max:10,
+                        step:0.001,
+                        onChange:{}
+                    },
+                    z:{
+                        value:meshItem.scale.z,
+                        min:-10,
+                        max:10,
+                        step:0.001,
+                        onChange:{}
+                    }
+                },
+                "castShadow":{
+                    value:meshItem.castShadow,
+                    onChange:{} //When we do want to change but has no spesific attributes we just init an empty object
+                },
+                "receiveShadow":{
+                    value:meshItem.receiveShadow,
+                    onChange:{}
+                },
+                "material":{
                     value:meshItem.material.name
+                },
+                "visible":{
+                    value:meshItem.visible,
+                    onChange:{}
                 }
             };
 
@@ -85,36 +178,41 @@ define(['jquery','three','material','geometry','mesh','lights','scene',"dat"],fu
         $.each(material.get(),function(name,materialItem){
 
             data[name] = {
-                "Type":{
+                "OBJECT":materialItem,
+                "type":{
                     value:materialItem.type,
                 },
-                "Color":{
+                "color":{
                     value:"#"+materialItem.color.getHexString(),
-                    onChange:updateItem.bind({item:materialItem,option:"color",type:'color'})
+                    onChange:{type:'color'}
                 },
-                "Emissive":{
+                "emissive":{
                     value:"#"+materialItem.emissive.getHexString(),
-                    onChange:updateItem.bind({item:materialItem,option:"emissive",type:'color'})
+                    onChange:{type:'color'}
                 },
-                "Specular":{
+                "specular":{
                     value:"#"+materialItem.specular.getHexString(),
-                    onChange:updateItem.bind({item:materialItem,option:"specular",type:'color'})
+                    onChange:{type:'color'}
                 },
-                "Shininess":{
+                "shininess":{
                     value:materialItem.shininess,
                     min:0,
                     max:100,
-                    onChange:updateItem.bind({item:materialItem,option:"shininess"})
+                    onChange:{}
                 },
-                "Shading":{
+                "shading":{
                     value:materialItem.shading,
                     options:{"THREE.FlatShading":THREE.FlatShading,"THREE.SmoothShading":THREE.SmoothShading},
-                    onChange:updateItem.bind({item:materialItem,option:"shading"})
+                    onChange:{}
                 },
-                "Wireframe":{
+                "wireframe":{
                     value:materialItem.wireframe,
                     editable:true,
-                    onChange:updateItem.bind({item:materialItem,option:"wireframe"})
+                    onChange:{}
+                },
+                "visible":{
+                    value:materialItem.visible,
+                    onChange:{}
                 }
             };
 
@@ -122,7 +220,59 @@ define(['jquery','three','material','geometry','mesh','lights','scene',"dat"],fu
         return data;
     };
 
+    var lightsToOverlay = function(){
+        var data = {};
+
+        $.each(lights.get(),function(name,lightItem){
+            data[name] = {
+                "OBJECT":lightItem,
+                "type":{
+                    value:lightItem.type
+                },
+                "color":{
+                    value:"#"+lightItem.color.getHexString(),
+                    onChange:{type:'color'}
+                },
+                "position":{
+                    "OBJECT":lightItem.position,
+                    x:{
+                        value:lightItem.position.x,
+                        onChange:{}
+                    },
+                    y:{
+                        value:lightItem.position.y,
+                        onChange:{}
+                    },
+                    z:{
+                        value:lightItem.position.z,
+                        onChange:{}
+                    }
+                },
+                "visible":{
+                    value:lightItem.visible,
+                    onChange:{}
+                }
+            };
+
+            if(typeof lightItem.intensity != "undefined"){
+                data[name]["intensity"] = {
+                    value:lightItem.intensity,
+                    min:0,
+                    max:100,
+                    onChange:{}
+                };
+            }
+        });
+
+        return data;
+    };
+
     var updateItem = function(value){
+        if(typeof this.item == "undefined" || this.option == "undefined"){
+            console.error("unable to set value, no item or option given");
+            return false;
+        }
+
         if(typeof this.type == "undefined"){this.type = "default"}
         switch(this.type.toLowerCase()){
             case "color":
@@ -130,8 +280,15 @@ define(['jquery','three','material','geometry','mesh','lights','scene',"dat"],fu
                 this.item[this.option].setHex(value);
                 break;
             case "vector":
-                value = value.split(",");
-                this.item[this.option].fromArray(value);
+                if(typeof value == "string"){
+                    value = value.split(",");
+                    this.item[this.option].fromArray(value);
+                }else{
+                    if(typeof this.option == "string"){
+                        this.option = this.option.split(".");
+                    }
+                    this.item[this.option[0]][this.option[1]] = value;
+                }
                 break;
             default:
                 this.item[this.option] = value;

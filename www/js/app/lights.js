@@ -2,18 +2,26 @@
  * Setup the lights being used within this scene
  */
 define(["three", "scene"], function (THREE, scene) {
+    var lights = {};
 
-    var ambient = new THREE.AmbientLight(0x404040);
-    scene.add( ambient );
+    var set = function(name,object,addToScene){
+        if(typeof addToScene == "undefined"){addToScene = false}
+        console.log(name,object);
+        lights[name] = object;
+        if(addToScene){scene.add(object)}
+    };
 
-    var light = new THREE.DirectionalLight(0xffffff,1);
-    light.position.y += 2000;
+    var get = function(name){
+        //Todo: not found object
+        if(typeof name == "undefined"){
+            return lights;
+        }
 
-    scene.add( light );
+        return lights[name];
+    };
 
     return {
-        //hemisphere:hemisphere,
-        ambient:ambient,
-        main:light
+        get:get,
+        set:set
     };
 });
