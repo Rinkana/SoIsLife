@@ -35,10 +35,11 @@ define([
             shading: THREE.FlatShading,
             vertexColors: THREE.FaceColors,
             shininess: 1,
-            side: THREE.FrontSide
+            side: THREE.FrontSide,
+            wireframe:true
         }));
 
-        var planeGeo = new THREE.PlaneGeometry(8192, 8192,20,20);
+        var planeGeo = new THREE.PlaneBufferGeometry(1000, 1000, 100,100);
         var plane = new THREE.Mesh(planeGeo, material.get("floor"));
         plane.castShadow = true;
         plane.receiveShadow = true;
