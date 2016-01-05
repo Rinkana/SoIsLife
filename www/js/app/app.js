@@ -18,15 +18,20 @@ define([
     'projector',
     'position',
     'player',
+    'clock',
     'utils',
     'dat',
     'debug'
-], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, mesh, raycaster, projector, position, player, utils, dat, debug) {
+], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, mesh, raycaster, projector, position, player, clock, utils, dat, debug) {
     var initialize = function () {
 
         lights.set("ambient",new THREE.AmbientLight(0x404040),true);
         lights.set("sun",new THREE.DirectionalLight(0xffffff,1),true);
         lights.get("sun").position.y += 2000;
+
+        texture.load("/images/heightmaps/terrain.png",function(){
+            material.get("floor").map = texture.get("terrain");
+        });
 
         material.set("floor", new THREE.MeshPhongMaterial({
             color: 0x06330F,//0x000000
@@ -36,10 +41,10 @@ define([
             vertexColors: THREE.FaceColors,
             shininess: 1,
             side: THREE.FrontSide,
-            wireframe:true
+            //wireframe:true
         }));
 
-        var planeGeo = new THREE.PlaneBufferGeometry(1000, 1000, 100,100);
+        var planeGeo = new THREE.PlaneGeometry(300, 300, 300, 300);
         var plane = new THREE.Mesh(planeGeo, material.get("floor"));
         plane.castShadow = true;
         plane.receiveShadow = true;
@@ -56,6 +61,7 @@ define([
 
     var animate = function () {
         requestAnimationFrame( animate );
+        player.move();
         controls.update();
         renderer.render(scene, camera);
     };
