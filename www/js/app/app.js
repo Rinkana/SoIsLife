@@ -41,7 +41,7 @@ define([
             vertexColors: THREE.FaceColors,
             shininess: 1,
             side: THREE.FrontSide,
-            //wireframe:true
+            wireframe:true
         }));
 
         var planeGeo = new THREE.PlaneGeometry(300, 300, 300, 300);

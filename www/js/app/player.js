@@ -1,17 +1,22 @@
 /**
  * Load the engine
  */
-define(["jquery","container", "three", "camera", "scene","raycaster","clock"], function ($,container, THREE, camera, scene, raycaster,clock) {
+define(["jquery","container", "three", "controls", "scene","raycaster","clock"], function ($,container, THREE, controls, scene, raycaster,clock) {
     var player = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshLambertMaterial({color: 0xff0000}));
     var mouseVector = new THREE.Vector2();
     var containerSize = container.getBoundingClientRect();
     var moveTo = new THREE.Vector3();
-    player.position.y += 10;
+
+    var moveToStep = new THREE.Vector3();
+    player.position.y += 2;
     scene.add(player);
+
+
+    var movementSpeed = 5; //per second
 
     var updateCamera = function () {
 
-        camera.target = player.position;
+        controls.target = player.position;
 
     };
 
@@ -37,17 +42,41 @@ define(["jquery","container", "three", "camera", "scene","raycaster","clock"], f
 
 
             //How many blocks do i need to move to get where i want to be
-            console.log(Math.abs(moveTo.x - player.position.x));
-            console.log(Math.abs(moveTo.y - player.position.y));
-            console.log(Math.abs(moveTo.z - player.position.z));
+            console.log((moveTo.x - player.position.x - 1));
+            console.log((moveTo.y - player.position.y - 1));
+            console.log((moveTo.z - player.position.z - 1));
 
-            player.position.copy(moveTo);
+            //Restart the clock for new delta calculations
+            clock.start();
+            //player.position.copy(moveTo);
         }
-        updateCamera();
     };
 
     var move = function(){
-        var delta = clock.getDelta();
+
+        if(!moveTo.equals(player.position)){
+            //
+            var delta = clock.getDelta();
+
+            if(moveTo.x.toFixed(3) != player.position.x.toFixed(3)){
+                player.position.x += (moveTo.x - player.position.x) < 0 ? -(movementSpeed * delta) : (movementSpeed * delta);
+            }
+            if(moveTo.y.toFixed(3) != player.position.y.toFixed(3)){
+                player.position.y += (moveTo.y - player.position.y) < 0 ? -(movementSpeed * delta) : (movementSpeed * delta);
+            }
+            if(moveTo.z.toFixed(3) != player.position.z.toFixed(3)){
+                player.position.z += (moveTo.z - player.position.z) < 0 ? -(movementSpeed * delta) : (movementSpeed * delta);
+            }
+
+            player.position.x = parseFloat((player.position.x).toFixed(1));
+            player.position.y = parseFloat((player.position.y).toFixed(1));
+            player.position.z = parseFloat((player.position.z).toFixed(1));
+            updateCamera();
+        }else{
+            //Not moving
+            //clock.stop();
+        }
+
 
         //var newPosition = new THREE.Vector3();
         //newPosition.x = moveTo.x - player.position.x * delta;

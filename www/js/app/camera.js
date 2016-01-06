@@ -5,7 +5,7 @@
  */
 define(["jquery", "three", "container"], function ($, THREE, container) {
 
-    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000000);
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
     camera.position.z = 40;
 
     var updateFocus = function (vector) {
