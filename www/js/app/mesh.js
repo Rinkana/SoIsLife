@@ -18,6 +18,10 @@ define(["jquery","three","geometry","material"],function($,THREE,geometry,materi
 
         return meshes[name];
     };
+
+    var getArray = function(){
+        return Object.keys(meshes).map(function (key) {return meshes[key]});
+    };
     
     var load = function(geometryName,materialName){
         var name = geometryName+"-"+materialName;
@@ -29,6 +33,7 @@ define(["jquery","three","geometry","material"],function($,THREE,geometry,materi
 
     return {
         get:get,
+        getArray: getArray,
         set:set,
         load:load
     };

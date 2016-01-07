@@ -16,13 +16,14 @@ define([
     'mesh',
     'raycaster',
     'projector',
-    'position',
+    'terrain',
     'player',
     'clock',
     'utils',
+    'config',
     'dat',
     'debug'
-], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, mesh, raycaster, projector, position, player, clock, utils, dat, debug) {
+], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, mesh, raycaster, projector, terrain, player, clock, utils,config ,dat, debug) {
     var initialize = function () {
 
         lights.set("ambient",new THREE.AmbientLight(0x404040),true);
@@ -33,27 +34,12 @@ define([
             material.get("floor").map = texture.get("terrain");
         });
 
-        material.set("floor", new THREE.MeshPhongMaterial({
-            color: 0x06330F,//0x000000
-            emissive: 0x06330F,//0xFF8040
-            specular: 0xffffff,
-            shading: THREE.FlatShading,
-            vertexColors: THREE.FaceColors,
-            shininess: 1,
-            side: THREE.FrontSide,
-            wireframe:true
-        }));
+        terrain.createTile(0,0);
+        terrain.createTile(1,0.5);
+        terrain.createTile(1,1.5);
+        terrain.createTile(0,2);
 
-        var planeGeo = new THREE.PlaneGeometry(300, 300, 300, 300);
-        var plane = new THREE.Mesh(planeGeo, material.get("floor"));
-        plane.castShadow = true;
-        plane.receiveShadow = true;
-        plane.rotation.set(-Math.PI / 2, 0, Math.PI);
-        plane.position.y -= -1;
-
-        mesh.set("floor",plane);
-
-        scene.add(mesh.get("floor"));
+        player.init();
 
         debug.enable();
 
