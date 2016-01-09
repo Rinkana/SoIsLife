@@ -13,26 +13,18 @@ class IndexController extends BaseController
     public function index(){
         $db = new \database\Database();
 
-        $query = $db->createQuery("terrain")->addField([
+        $selectQuery = \database\orm\Query::select("*")->selectFields(["field1","field2","*"])->from("terrain");
+        $createQuery = \database\orm\Query::create("terrain")->createFields([
             "id" => "increments",
             "x" => "INT(11)",
             "y" => "INT(11)",
             "file" => "VARCHAR(255)"
-        ]);
+        ])->createField("test1","VARCHAR(44)");
 
-        //Some examples of what to create:
-        /*
-         * Select("id")->from("terrain")->where("id",">",15);
-         * Select(["ter.id","tree.id"])->from(["terrain" => "ter","trees" => "tree"])->on("tree.terrain","ter.id")
-         *
-         */
+        var_dump($selectQuery->parse());
+        //var_dump($createQuery->parse());
 
-
-        //$query = new \database\query\Create("terrain");
-        //$query
-
-        var_dump($query);
-        var_dump($query->parse());
+        //var_dump($query->parse());
         //include(ROOT."/application/views/main.php");
         exit();
     }
