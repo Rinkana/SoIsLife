@@ -21,11 +21,11 @@ class IndexController extends BaseController
             "file" => "VARCHAR(255)"
         ])->createField("test1","VARCHAR(44)");
 
-        var_dump($selectQuery->parse());
+        //var_dump($selectQuery->parse());
         //var_dump($createQuery->parse());
 
         //var_dump($query->parse());
-        //include(ROOT."/application/views/main.php");
+        include(ROOT."/application/views/main.php");
         exit();
     }
 }

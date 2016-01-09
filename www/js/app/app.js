@@ -34,10 +34,13 @@ define([
             material.get("floor").map = texture.get("terrain");
         });
 
-        terrain.createTile(0,0);
-        terrain.createTile(1,0.5);
-        terrain.createTile(1,1.5);
-        terrain.createTile(0,2);
+        terrain.loadTile(0,0);
+
+        //terrain.createTile(0,0);
+        terrain.createTile(1,0.5).rotation.set(-Math.PI / 2, 0, Math.PI);
+        terrain.createTile(1,1.5).rotation.set(-Math.PI / 2, 0, Math.PI);
+        terrain.createTile(0,2).rotation.set(-Math.PI / 2, 0, Math.PI);
+
 
         player.init();
 

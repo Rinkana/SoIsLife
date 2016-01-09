@@ -37,11 +37,18 @@ define(["jquery","container", "three", "controls", "scene","raycaster","clock"],
         var intersects = raycaster.intersectByVector(mouseVector);
         if(intersects.length > 0) {
             var intersect = intersects[0];
+
+            //Todo: only use facePosition for the calculations?
+
+            var facePosition = intersect.object.geometry.vertices[intersect.face.a];
+            facePosition.applyMatrix4(intersect.object.matrixWorld);
+
             var newPosition = new THREE.Vector3();
             newPosition.copy(intersect.point).add(intersect.face.normal);
             newPosition.divideScalar(1).floor().multiplyScalar(1).addScalar(1);//x,z,y. Note that Y is half the height of the mesh
             newPosition.x -= 0.5;//Move back
-            newPosition.z -= 1.5;
+            newPosition.z -= 0.5;
+            newPosition.y = parseFloat((facePosition.y + 1).toFixed(1)); //Otherwise the clock will cause issues.
 
             movements.push(newPosition);
 
@@ -51,7 +58,7 @@ define(["jquery","container", "three", "controls", "scene","raycaster","clock"],
     var move = function(){
 
         if(!moveTo.equals(player.position)){
-            //
+            //Todo: allow for less accurate positioning
             var delta = clock.getDelta();
 
             if(moveTo.x.toFixed(3) != player.position.x.toFixed(3)){
