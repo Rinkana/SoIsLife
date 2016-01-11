@@ -7,12 +7,12 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
     material.set("floor", new THREE.MeshPhongMaterial({
         color: 0x06330F,//0x000000
         emissive: 0x06330F,//0xFF8040
-        specular: 0xffffff,
+        specular: 0x525252,
         shading: THREE.FlatShading,
         vertexColors: THREE.FaceColors,
-        shininess: 1,
+        shininess: 3,
         side: THREE.FrontSide,
-        wireframe: true
+        wireframe: false
     }));
 
     var createTile = function (x, z, geometry) {

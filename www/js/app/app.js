@@ -27,19 +27,21 @@ define([
     var initialize = function () {
 
         lights.set("ambient",new THREE.AmbientLight(0x404040),true);
-        lights.set("sun",new THREE.DirectionalLight(0xffffff,1),true);
+        lights.set("sun",new THREE.DirectionalLight(0xb3b3b3,1.5),true);
         lights.get("sun").position.y += 2000;
 
         texture.load("/images/heightmaps/terrain.png",function(){
             material.get("floor").map = texture.get("terrain");
         });
 
+        //The terrain seems to have an positioning issue.
+        //Todo: investigate
         terrain.loadTile(0,0);
 
         //terrain.createTile(0,0);
-        terrain.createTile(1,0.5).rotation.set(-Math.PI / 2, 0, Math.PI);
-        terrain.createTile(1,1.5).rotation.set(-Math.PI / 2, 0, Math.PI);
-        terrain.createTile(0,2).rotation.set(-Math.PI / 2, 0, Math.PI);
+        //terrain.createTile(1,0.5).rotation.set(-Math.PI / 2, 0, Math.PI);
+        //terrain.createTile(1,1.5).rotation.set(-Math.PI / 2, 0, Math.PI);
+        //terrain.createTile(0,2).rotation.set(-Math.PI / 2, 0, Math.PI);
 
 
         player.init();
