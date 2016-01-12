@@ -4,5 +4,14 @@
  * Todo: make this variable
  */
 define([],function(){
-    return document.getElementById("container");
+    var container = document.getElementById("container");
+
+    var getContainerSize = function(){
+        return container.getBoundingClientRect();
+    };
+
+    return {
+        element:container,
+        getContainerSize:getContainerSize
+    }
 });

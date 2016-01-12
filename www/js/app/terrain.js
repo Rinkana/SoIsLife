@@ -12,17 +12,22 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         vertexColors: THREE.FaceColors,
         shininess: 3,
         side: THREE.FrontSide,
-        wireframe: false
+        wireframe: true
     }));
 
     var createTile = function (x, z, geometry) {
         var meshName = "floor-" + x + "-" + z;
 
+        var plane;
         if (typeof geometry == "undefined") {
             geometry = new THREE.PlaneGeometry(config.tileSize, config.tileSize, config.tileSize, config.tileSize);
+            plane = new THREE.Mesh(geometry, material.get("floor"));
+            plane.rotateX(-Math.PI / 2);
+            plane.rotateZ(Math.PI / 2);
+        }else{
+            plane = new THREE.Mesh(geometry, material.get("floor"));
         }
 
-        var plane = new THREE.Mesh(geometry, material.get("floor"));
         plane.castShadow = true;
         plane.receiveShadow = true;
 
@@ -49,9 +54,14 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
 
     };
 
+    var updateTerrain = function(playerPosition){
+
+    };
+
     return {
         createTile: createTile,
-        loadTile:loadTile
+        loadTile:loadTile,
+        updateTerrain:updateTerrain
     };
 
 });
