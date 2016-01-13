@@ -36,7 +36,19 @@ define([
 
         //The terrain seems to have an positioning issue.
         //Todo: investigate
-        terrain.loadTile(0,0);
+        //terrain.loadTile(0,0);
+
+        terrain.createRandomTile(0,0);
+        terrain.createRandomTile(0,1);
+        /**
+         * [
+         [3, 2, 2, 5, 8],
+         [2, 1, 2, 3, 6],
+         [1, 1, 1, 2, 4],
+         [1, 1, 1, 3, 4],
+         [1, 1, 1, 4, 4]
+         ]
+         */
 
         terrain.createTile(5,5);
         terrain.createTile(4,4);
@@ -44,6 +56,7 @@ define([
         terrain.createTile(2,2);
         terrain.createTile(1,1);
         terrain.createTile(-5,-5);
+        terrain.createTile(-1,-1);
         //terrain.createTile(1,0.5).rotation.set(-Math.PI / 2, 0, Math.PI);
         //terrain.createTile(1,1.5).rotation.set(-Math.PI / 2, 0, Math.PI);
         //terrain.createTile(0,2).rotation.set(-Math.PI / 2, 0, Math.PI);

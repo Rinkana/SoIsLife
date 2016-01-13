@@ -50,12 +50,10 @@ define(["jquery","three","clock","container","raycaster"],function($,THREE,clock
 
             var newPosition = intersect.object.geometry.vertices[intersect.face.a].clone();
             newPosition.applyMatrix4(intersect.object.matrixWorld);
-
             newPosition.x = intersect.point.x + intersect.face.normal.x;
             newPosition.z = intersect.point.z + intersect.face.normal.z;
             newPosition.divideScalar(1).floor().multiplyScalar(1).addScalar(0.5);
-            newPosition.y = parseFloat((newPosition.y + 0.5).toFixed(1)); //Otherwise the clock will cause issues.
-
+            newPosition.y = parseFloat((newPosition.y + 0.5).toFixed(2)); //Otherwise the clock will cause issues.
             addMovement(newPosition);
 
         }
