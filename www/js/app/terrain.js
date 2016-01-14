@@ -116,7 +116,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         return new THREE.Vector3( vx/va, vy/va, vz/va);
     };
 
-    var createRandomTile = function(x,y){
+    var createRandomTile = function(x,z){
         var terrainArray = [];
 
         //add to extra because the array is made by vertex. Where the config is per face
@@ -128,7 +128,23 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
             terrainArray.push(row);
         }
 
-        return createTileFromArray(x,y,terrainArray);
+        return createTileFromArray(x,z,terrainArray);
+    };
+
+    var buildTileRadius = function(playerInfo){
+        for(var xCounter = playerInfo.visibleRadiusStart.x; xCounter <= playerInfo.visibleRadiusEnd.x; xCounter++){
+            for(var zCounter = playerInfo.visibleRadiusStart.z; zCounter <= playerInfo.visibleRadiusEnd.z; zCounter++){
+                var meshName = "floor-"+xCounter+"-"+zCounter;
+
+                var foundMesh = mesh.get(meshName);
+                if(typeof foundMesh == "undefined"){
+                    createRandomTile(xCounter,zCounter)
+                }else if(foundMesh instanceof THREE.Mesh){
+                    foundMesh.visible = true;
+                }
+
+            }
+        }
     };
 
     return {
@@ -136,7 +152,8 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         loadTile: loadTile,
         updateTerrain: updateTerrain,
         createTileFromArray:createTileFromArray,
-        createRandomTile:createRandomTile
+        createRandomTile:createRandomTile,
+        buildTileRadius:buildTileRadius
     };
 
 });

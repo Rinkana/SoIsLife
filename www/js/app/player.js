@@ -60,6 +60,9 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
 
         if(typeof nextMovement == "object") {
             setNewPosition(nextMovement);
+        }else if(nextMovement === true){
+            terrain.buildTileRadius(getPlayerInfo());
+            console.log();
         }
 
     };
