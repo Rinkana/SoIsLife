@@ -1,7 +1,7 @@
 /**
  * Load the engine
  */
-define(["jquery", "container", "three", "controls", "scene", "camera", "terrain", "position", "config"], function ($, container, THREE, controls, scene,  camera, terrain, position, config) {
+define(["jquery", "container", "three", "controls", "scene", "camera", "terrain", "position", "config"], function ($, container, THREE, controls, scene, camera, terrain, position, config) {
     var player = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshLambertMaterial({color: 0xff0000}));
 
     player.position.y += 2;
@@ -26,19 +26,31 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
 
         return {
             currentTile: currentTile,
-            visibleRadiusStart: {
-                x: currentTile.x - config.tileRadiusVisible,
-                z: currentTile.z - config.tileRadiusVisible
+            visibleRadius: {
+                start: {
+                    x: currentTile.x - config.tileRadiusVisible,
+                    z: currentTile.z - config.tileRadiusVisible
+                },
+                end: {
+                    x: currentTile.x + config.tileRadiusVisible,
+                    z: currentTile.z + config.tileRadiusVisible
+                }
             },
-            visibleRadiusEnd: {
-                x: currentTile.x + config.tileRadiusVisible,
-                z: currentTile.z + config.tileRadiusVisible
+            bufferRadius: {
+                start: {
+                    x: currentTile.x - config.tileRadiusBuffer,
+                    z: currentTile.z - config.tileRadiusBuffer
+                },
+                end: {
+                    x: currentTile.x + config.tileRadiusBuffer,
+                    z: currentTile.z + config.tileRadiusBuffer
+                }
             }
         }
     };
 
 
-    var setNewPosition = function(newPosition){
+    var setNewPosition = function (newPosition) {
 
         //Todo: less ugly rounding...
         player.position.add(newPosition)
@@ -58,9 +70,9 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
 
         var nextMovement = position.getNextMovement(player.position);
 
-        if(typeof nextMovement == "object") {
+        if (typeof nextMovement == "object") {
             setNewPosition(nextMovement);
-        }else if(nextMovement === true){
+        } else if (nextMovement === true) {
             terrain.buildTileRadius(getPlayerInfo());
             console.log();
         }
@@ -68,9 +80,9 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
     };
 
     //Todo: mousedown and mouseup instead of click.
-    $(container.element).click(function(event){
+    $(container.element).click(function (event) {
         event.preventDefault();
-        position.calculateNewPosition( event.clientX,  event.clientY);
+        position.calculateNewPosition(event.clientX, event.clientY);
     });
 
 

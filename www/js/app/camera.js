@@ -14,7 +14,7 @@ define(["jquery", "three", "container"], function ($, THREE, container) {
         bottom: window.innerHeight / -2
     };
 
-    var camera = new THREE.OrthographicCamera(  cameraSize.left,  cameraSize.right, cameraSize.top, cameraSize.bottom, -500, 1000 );
+    var camera = new THREE.OrthographicCamera(  cameraSize.left,  cameraSize.right, cameraSize.top, cameraSize.bottom, -250, 250 );
     camera.fov = 70;
     camera.zoom = 10;
     camera.position.z = 40;

@@ -1,7 +1,7 @@
 /**
  * Todo: use this for geometry handling and caching
  */
-define(["jquery","three","geometry","material"],function($,THREE,geometry,material){
+define(["jquery","three","geometry","material","utils"],function($,THREE,geometry,material,utils){
     var meshes = {
     };
 
@@ -16,7 +16,11 @@ define(["jquery","three","geometry","material"],function($,THREE,geometry,materi
             return meshes;
         }
 
-        return meshes[name];
+        return utils.deepObjectGet(meshes,name);
+    };
+
+    var remove = function(name){
+        delete meshes[name];
     };
 
     var getArray = function(){
@@ -33,6 +37,7 @@ define(["jquery","three","geometry","material"],function($,THREE,geometry,materi
 
     return {
         get:get,
+        remove:remove,
         getArray: getArray,
         set:set,
         load:load

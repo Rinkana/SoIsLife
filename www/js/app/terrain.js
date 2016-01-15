@@ -16,7 +16,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
     }));
 
     var createTile = function (x, z, geometry) {
-        var meshName = "floor-" + x + "-" + z;
+        var meshName = "floor-" + x + "/" + z;
 
         var plane;
         if (typeof geometry == "undefined") {
@@ -58,7 +58,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
 
     };
 
-    var createTileFromArray = function (x,y,terrain) {
+    var createTileFromArray = function (x, y, terrain) {
         var geometry = new THREE.Geometry(),
             width = (terrain[0].length / 2) - 1,//Todo: use config vars?
             height = (terrain.length / 2) - 1,
@@ -74,72 +74,98 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
             for (var hPos = -height; hPos < height; hPos++) {
                 var faceIndex = faceCounter * 6;//Matrix 6
                 var faceData = [
-                    terrain[hPos + height][ wPos + width] * squareSize / 3,
-                    terrain[hPos + height][ wPos + 1 + width] * squareSize / 3,
-                    terrain[hPos + 1 + height][ wPos + width] * squareSize / 3,
-                    terrain[hPos + 1 + height][ wPos + 1 + width] * squareSize / 3
+                    terrain[hPos + height][wPos + width] * squareSize / 3,
+                    terrain[hPos + height][wPos + 1 + width] * squareSize / 3,
+                    terrain[hPos + 1 + height][wPos + width] * squareSize / 3,
+                    terrain[hPos + 1 + height][wPos + 1 + width] * squareSize / 3
                 ];
 
                 //Triangle 1
                 vector1 = new THREE.Vector3(wPos * squareSize, faceData[0], (-1 * hPos) * squareSize);
                 vector2 = new THREE.Vector3((wPos + 1) * squareSize, faceData[1], (-1 * hPos) * squareSize);
                 vector3 = new THREE.Vector3(wPos * squareSize, faceData[2], (-1 + (-1 * hPos)) * squareSize);
-                geometry.vertices.push(vector1,vector2,vector3);
+                geometry.vertices.push(vector1, vector2, vector3);
 
-                face = new THREE.Face3(faceIndex,faceIndex + 1, faceIndex + 2);
-                face.normal = calculateFaceNormals(vector1,vector2,vector3);
+                face = new THREE.Face3(faceIndex, faceIndex + 1, faceIndex + 2);
+                face.normal = calculateFaceNormals(vector1, vector2, vector3);
                 geometry.faces.push(face);
 
                 //Triangle 2
                 vector1 = new THREE.Vector3((wPos + 1) * squareSize, faceData[1], (-1 * hPos) * squareSize);
-                vector2 = new THREE.Vector3((wPos + 1) * squareSize, faceData[3], (-1 +(-1 * hPos)) * squareSize);
+                vector2 = new THREE.Vector3((wPos + 1) * squareSize, faceData[3], (-1 + (-1 * hPos)) * squareSize);
                 vector3 = new THREE.Vector3(wPos * squareSize, faceData[2], (-1 + (-1 * hPos)) * squareSize);
-                geometry.vertices.push(vector1,vector2,vector3);
+                geometry.vertices.push(vector1, vector2, vector3);
 
-                face = new THREE.Face3(faceIndex + 3,faceIndex + 4, faceIndex + 5);
-                face.normal = calculateFaceNormals(vector1,vector2,vector3);
+                face = new THREE.Face3(faceIndex + 3, faceIndex + 4, faceIndex + 5);
+                face.normal = calculateFaceNormals(vector1, vector2, vector3);
                 geometry.faces.push(face);
 
                 faceCounter++;
             }
         }
 
-        return createTile(x,y,geometry);
+        return createTile(x, y, geometry);
 
     };
 
-    var calculateFaceNormals = function(vector1,vector2,vector3){
+    var calculateFaceNormals = function (vector1, vector2, vector3) {
         var vx = (vector1.y - vector3.y) * (vector2.z - vector3.z) - (vector1.z - vector3.z) * (vector2.y - vector3.y);
         var vy = (vector1.z - vector3.z) * (vector2.x - vector3.x) - (vector1.x - vector3.x) * (vector2.z - vector3.z);
         var vz = (vector1.x - vector3.x) * (vector2.y - vector3.y) - (vector1.y - vector3.y) * (vector2.x - vector3.x);
-        var va = Math.sqrt( Math.pow(vx,2) +Math.pow(vy,2)+Math.pow(vz,2));
-        return new THREE.Vector3( vx/va, vy/va, vz/va);
+        var va = Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2) + Math.pow(vz, 2));
+        return new THREE.Vector3(vx / va, vy / va, vz / va);
     };
 
-    var createRandomTile = function(x,z){
+    var createRandomTile = function (x, z) {
         var terrainArray = [];
 
         //add to extra because the array is made by vertex. Where the config is per face
-        for(var wPos = 0; wPos < config.tileSize + 2; wPos++){
+        for (var wPos = 0; wPos < config.tileSize + 2; wPos++) {
             var row = [];
-            for(var hPos = 0; hPos < config.tileSize + 2; hPos++){
-                row.push(Math.floor(Math.random()*(1 - -1 + 1 ) + -1));
+            for (var hPos = 0; hPos < config.tileSize + 2; hPos++) {
+                row.push(Math.floor(Math.random() * (1 - -1 + 1 ) + -1));
             }
             terrainArray.push(row);
         }
 
-        return createTileFromArray(x,z,terrainArray);
+        return createTileFromArray(x, z, terrainArray);
     };
 
-    var buildTileRadius = function(playerInfo){
-        for(var xCounter = playerInfo.visibleRadiusStart.x; xCounter <= playerInfo.visibleRadiusEnd.x; xCounter++){
-            for(var zCounter = playerInfo.visibleRadiusStart.z; zCounter <= playerInfo.visibleRadiusEnd.z; zCounter++){
-                var meshName = "floor-"+xCounter+"-"+zCounter;
+    //Todo: much refactoring....
+    var cleanTerrainCache = function (radius) {
+        for (var meshName in mesh.get()) {
+            if (!mesh.get().hasOwnProperty(meshName)) continue;
+            var meshPosition = meshName.replace("floor-", "").split("/");
+
+            if (meshPosition.length == 2) {
+                if ( radius.start.x > meshPosition[0] ||
+                     radius.start.z > meshPosition[1] ||
+                     radius.end.x < meshPosition[0] ||
+                     radius.end.z < meshPosition[1]
+                ) {
+                    console.log("RM" + meshName);
+                    //mesh.get(meshName).material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: false } );
+                    scene.remove(mesh.get(meshName));
+                    mesh.remove(meshName);
+                }else{
+                    mesh.visible = false;
+                }
+            }
+
+        }
+    };
+
+    var buildTileRadius = function (playerInfo) {
+        cleanTerrainCache(playerInfo.bufferRadius);
+
+        for (var xCounter = playerInfo.visibleRadius.start.x; xCounter <= playerInfo.visibleRadius.end.x; xCounter++) {
+            for (var zCounter = playerInfo.visibleRadius.start.z; zCounter <= playerInfo.visibleRadius.end.z; zCounter++) {
+                var meshName = "floor-" + xCounter + "/" + zCounter;
 
                 var foundMesh = mesh.get(meshName);
-                if(typeof foundMesh == "undefined"){
-                    createRandomTile(xCounter,zCounter)
-                }else if(foundMesh instanceof THREE.Mesh){
+                if (typeof foundMesh == "undefined") {
+                    createRandomTile(xCounter, zCounter)
+                } else if (foundMesh instanceof THREE.Mesh) {
                     foundMesh.visible = true;
                 }
 
@@ -151,9 +177,9 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         createTile: createTile,
         loadTile: loadTile,
         updateTerrain: updateTerrain,
-        createTileFromArray:createTileFromArray,
-        createRandomTile:createRandomTile,
-        buildTileRadius:buildTileRadius
+        createTileFromArray: createTileFromArray,
+        createRandomTile: createRandomTile,
+        buildTileRadius: buildTileRadius
     };
 
 });
