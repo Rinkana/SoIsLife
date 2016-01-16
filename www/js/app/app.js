@@ -38,6 +38,20 @@ define([
         //Todo: investigate
         //terrain.loadTile(0,0);
 
+        /*var TerrainGeo = new THREE.TerrainGeometry([
+            [3, 2, 2, 5, 8],
+            [2, 1, 2, 3, 6],
+            [1, 1, 1, 2, 4],
+            [1, 1, 1, 3, 4],
+            [1, 1, 1, 4, 4]
+        ],1);
+
+        console.log(TerrainGeo);
+
+        var test = new THREE.Mesh(TerrainGeo, material.get("floor"));
+
+        scene.add(test);*/
+
         terrain.createRandomTile(0,0);
         terrain.createRandomTile(0,1);
         /**

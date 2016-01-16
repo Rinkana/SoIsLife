@@ -2,12 +2,16 @@ require.config({
     baseUrl: 'js/app',
     shim: {
         'threeCore': {exports: "THREE"},
-        'OrbitControls': {deps: ['threeCore'], exports: "THREE"}
+        'OrbitControls': {deps: ['threeCore'], exports: "THREE"},
+        'TerrainGeometry': {deps: ['threeCore'], exports: "THREE"},
+        'TerrainBufferGeometry': {deps: ['threeCore'], exports: "THREE"}
     },
     paths: {
         jquery: "/scripts/jquery/dist/jquery",
         threeCore: "/scripts/three.js/build/three.min",
         OrbitControls: "../lib/three/OrbitControls",
+        TerrainBufferGeometry: "../lib/three/TerrainBufferGeometry",
+        TerrainGeometry: "../lib/three/TerrainGeometry",
         three: "../lib/three/three",
         dat: "/scripts/exdat/build/dat.gui.min"
     }
