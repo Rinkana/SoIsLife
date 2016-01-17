@@ -62,9 +62,9 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         var terrainArray = [];
 
         //add to extra because the array is made by vertex. Where the config is per face
-        for (var wPos = 0; wPos < config.tileSize + 2; wPos++) {
+        for (var wPos = 0; wPos < config.tileSize + 1; wPos++) {
             var row = [];
-            for (var hPos = 0; hPos < config.tileSize + 2; hPos++) {
+            for (var hPos = 0; hPos < config.tileSize + 1; hPos++) {
                 row.push(Math.floor(Math.random() * (1 - -1 + 1 ) + -1));
             }
             terrainArray.push(row);
@@ -79,6 +79,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
     var cleanTerrainCache = function (radius) {
         for (var meshName in mesh.get()) {
             if (!mesh.get().hasOwnProperty(meshName)) continue;
+
             var meshPosition = meshName.replace("floor-", "").split("/");
 
             if (meshPosition.length == 2) {

@@ -12,8 +12,8 @@ THREE.TerrainGeometry = function (points, size) {
     points = points === undefined ? "random" : points;
     size = size || 1;
 
-    var width = (points[0].length / 2) - 1,
-        depth = (points.length / 2) - 1,
+    var width = (points[0].length / 2) - 0.5,
+        depth = (points.length / 2) - 0.5,
         faceCounter = 0;
 
     var vector1,

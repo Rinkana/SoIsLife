@@ -48,6 +48,8 @@ define(["jquery","three","clock","container","raycaster"],function($,THREE,clock
         if (intersects.length > 0) {
             var intersect = intersects[0];
 
+            console.log(intersect);
+
             var newPosition = intersect.object.geometry.vertices[intersect.face.a].clone();
             newPosition.applyMatrix4(intersect.object.matrixWorld);
             newPosition.x = intersect.point.x + intersect.face.normal.x;
