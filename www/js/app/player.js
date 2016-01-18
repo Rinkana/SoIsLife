@@ -3,6 +3,10 @@
  */
 define(["jquery", "container", "three", "controls", "scene", "camera", "terrain", "position", "config"], function ($, container, THREE, controls, scene, camera, terrain, position, config) {
     var player = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshLambertMaterial({color: 0xff0000}));
+    var mousePos = {
+        x:0,
+        y:0
+    };
 
     player.position.y += 2;
     scene.add(player);
@@ -23,6 +27,8 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
             x: xPos,
             z: zPos
         };
+
+        console.log(currentTile);
 
         return {
             currentTile: currentTile,
@@ -80,10 +86,21 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
     };
 
     //Todo: mousedown and mouseup instead of click.
-    $(container.element).click(function (event) {
+    $(container.element).on("mousedown touchstart", function (event) {
+        event.preventDefault();
+        mousePos.x = event.clientX;
+        mousePos.y = event.clientY;
+    }).on("mouseup touchend", function (event) {
+        event.preventDefault();
+        if (Math.abs(mousePos.x - event.clientX) <= 5 && Math.abs(mousePos.y - event.clientY) <= 5) {
+            position.calculateNewPosition(event.clientX, event.clientY);
+        }
+    });
+
+    /*$(container.element).click(function (event) {
         event.preventDefault();
         position.calculateNewPosition(event.clientX, event.clientY);
-    });
+    });*/
 
 
     return {

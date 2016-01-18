@@ -83,7 +83,6 @@ define(['jquery','three','material','geometry','mesh','lights','scene',"dat"],fu
     var meshToOverlay = function(){
 
         var data = {};
-
         $.each(mesh.get(),function(name,meshItem){
             data[name] = {
                 "OBJECT":meshItem,

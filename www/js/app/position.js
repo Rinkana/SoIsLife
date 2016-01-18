@@ -45,6 +45,7 @@ define(["jquery","three","clock","container","raycaster"],function($,THREE,clock
         mouseVector.set(( mouseVector.x * 2 ) - 1, -( mouseVector.y * 2 ) + 1);
 
         var intersects = raycaster.intersectByVector(mouseVector);
+
         if (intersects.length > 0) {
             var intersect = intersects[0];
 

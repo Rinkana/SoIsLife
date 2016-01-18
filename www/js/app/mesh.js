@@ -5,26 +5,45 @@ define(["jquery","three","geometry","material","utils"],function($,THREE,geometr
     var meshes = {
     };
 
-    var set = function(name,object){
-        console.log(name,object);
-        meshes[name] = object;
+    var set = function(name,group,object){
+        if(meshes[group] === undefined ){
+            meshes[group] = {};
+        }
+        meshes[group][name] = object;
     };
 
-    var get = function(name){
+    var get = function(name,group){
         //Todo: not found object
         if(typeof name == "undefined"){
-            return meshes;
+            var allMeshes = {};
+
+            var groups = Object.keys(meshes);
+            for(var groupKey in groups){
+                for(var meshKey in meshes[groups[groupKey]]){
+                    if (!meshes[groups[groupKey]].hasOwnProperty(meshKey)) continue;
+                    var newName = groups[groupKey]+"."+meshKey;
+                    allMeshes[newName] = meshes[groups[groupKey]][meshKey];
+                }
+            }
+
+            return allMeshes;
         }
 
-        return utils.deepObjectGet(meshes,name);
+        if(group == undefined){
+            name = name.split('.');
+            group = name[1];
+            name = name[0];
+        }
+        return meshes[group][name];
     };
 
     var remove = function(name){
         delete meshes[name];
     };
 
-    var getArray = function(){
-        return Object.keys(meshes).map(function (key) {return meshes[key]});
+    var getArray = function(name, group){
+        var object = utils.deepObjectGet(meshes,name);
+        return Object.keys(object).map(function (key) {return object[key]});
     };
     
     var load = function(geometryName,materialName){

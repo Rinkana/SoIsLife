@@ -12,11 +12,11 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         vertexColors: THREE.FaceColors,
         shininess: 3,
         side: THREE.FrontSide,
-        wireframe: true
+        wireframe: false
     }));
 
     var createTile = function (x, z, geometry) {
-        var meshName = "floor-" + x + "/" + z;
+        var meshName =  x + "|" + z;
 
         var plane;
         if (typeof geometry == "undefined") {
@@ -36,11 +36,11 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         plane.position.z = z * config.tileSize;
 
 
-        mesh.set(meshName, plane);
+        mesh.set(meshName,"floor" ,plane);
 
-        scene.add(mesh.get(meshName));
+        scene.add(mesh.get(meshName,"floor"));
 
-        return mesh.get(meshName);
+        return mesh.get(meshName,"floor");
     };
 
     var loadTile = function (x, z) {
@@ -80,7 +80,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         for (var meshName in mesh.get()) {
             if (!mesh.get().hasOwnProperty(meshName)) continue;
 
-            var meshPosition = meshName.replace("floor-", "").split("/");
+            var meshPosition = meshName.split("|");
 
             if (meshPosition.length == 2) {
                 if ( radius.start.x > meshPosition[0] ||
@@ -105,9 +105,9 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
 
         for (var xCounter = playerInfo.visibleRadius.start.x; xCounter <= playerInfo.visibleRadius.end.x; xCounter++) {
             for (var zCounter = playerInfo.visibleRadius.start.z; zCounter <= playerInfo.visibleRadius.end.z; zCounter++) {
-                var meshName = "floor-" + xCounter + "/" + zCounter;
+                var meshName = xCounter + "|" + zCounter;
 
-                var foundMesh = mesh.get(meshName);
+                var foundMesh = mesh.get(meshName,"floor");
                 if (typeof foundMesh == "undefined") {
                     createRandomTile(xCounter, zCounter)
                 } else if (foundMesh instanceof THREE.Mesh) {

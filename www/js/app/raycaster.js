@@ -5,7 +5,8 @@ define(["three","camera","mesh"],function(THREE,camera,mesh){
     var raycaster = new THREE.Raycaster(  );
 
     var intersectByVector = function(vector,objects){
-        objects = (typeof objects == "undefined" ? mesh.getArray() : objects);
+        objects = (typeof objects == "undefined" ? mesh.getArray("floor") : objects);
+        console.log(objects);
 
         //Todo, not all object can be raycasted. What to do?
 
