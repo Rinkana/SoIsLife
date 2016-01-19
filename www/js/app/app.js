@@ -44,19 +44,19 @@ define([
             [1, 1, 1, 1],
             [1, 1, 1, 1]
         ],1);
-        var TerrainBufferGeo = new THREE.TerrainBufferGeometry([
+        /*var TerrainBufferGeo = new THREE.TerrainBufferGeometry([
             [3, 2, 2, 5, 8],
             [2, 1, 2, 3, 6],
             [1, 1, 1, 2, 4],
             [1, 1, 1, 3, 4],
             [1, 1, 1, 4, 4]
-        ],1);
+        ],1);*/
 
         //var test = new THREE.Mesh(TerrainBufferGeo, material.get("floor"));
 
         //scene.add(test);
 
-        terrain.createRandomTile(0,0);
+        //terrain.createRandomTile(0,0);
         //terrain.createRandomTile(0,0);
         //terrain.createTile(0,0);
         /**
@@ -79,7 +79,7 @@ define([
         //terrain.createTile(1,0.5).rotation.set(-Math.PI / 2, 0, Math.PI);
         //terrain.createTile(1,1.5).rotation.set(-Math.PI / 2, 0, Math.PI);
         //terrain.createTile(0,2).rotation.set(-Math.PI / 2, 0, Math.PI);
-
+        terrain.load(0,0);
 
         player.init();
 

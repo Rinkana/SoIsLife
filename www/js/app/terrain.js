@@ -50,8 +50,12 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         });
     };
 
-    var load = function (tiles, callback) {
-
+    var load = function (x,z, callback) {
+        //var filename = (x >= 0 ? "p" : "n") + x + (z >= 0 ? "p" : "n") + z + ".terr";
+        var filename = "p0p0.terr";
+        loader.terrainLoader.load("/models/"+filename,function(geometry){
+            createTile(x,z,geometry);
+        });
     };
 
     var updateTerrain = function (playerPosition) {
@@ -73,6 +77,18 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         var geo = new THREE.TerrainGeometry(terrainArray);
 
         return createTile(x, z, geo);
+    };
+
+    var createFlatTile = function(){
+        var data = [];
+        for(var i = 0; i <= 64; i++){
+            var row = [];
+            for(var j = 0; j <= 64; j++){
+                row.push(0);
+            }
+            data.push(row.join(","));
+        }
+        console.log(data.join("\n"));
     };
 
     //Todo: much refactoring....
@@ -109,7 +125,8 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
 
                 var foundMesh = mesh.get(meshName,"floor");
                 if (typeof foundMesh == "undefined") {
-                    createRandomTile(xCounter, zCounter)
+                    load(xCounter,zCounter);
+                    //createRandomTile(xCounter, zCounter);
                 } else if (foundMesh instanceof THREE.Mesh) {
                     foundMesh.visible = true;
                 }
@@ -123,7 +140,8 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         loadTile: loadTile,
         updateTerrain: updateTerrain,
         createRandomTile: createRandomTile,
-        buildTileRadius: buildTileRadius
+        buildTileRadius: buildTileRadius,
+        load:load
     };
 
 });

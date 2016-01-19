@@ -7,22 +7,23 @@
 define(['three', 'scene', 'material'], function (THREE, scene, material) {
     var modelLoader = new THREE.JSONLoader();
     var textureLoader = new THREE.TextureLoader();
+    var terrainLoader = new THREE.TerrainLoader();
     var objects = [];
     var textures = [];
 
-    var loadModel = function (x,y,z) {
+    var loadModel = function (x, y, z) {
         x = ( typeof x == "undefined" ? 0 : x );
         y = ( typeof x == "undefined" ? 0 : y );
         z = ( typeof x == "undefined" ? 0 : z );
-        modelLoader.load("/models/"+x+"-"+z+".js", function (geometry) {
+        modelLoader.load("/models/" + x + "-" + z + ".js", function (geometry) {
             //geometry.scale(50,50,50);
             x = parseInt(x.substr(1)) * 10;
             z = parseInt(z.substr(1)) * 10;
 
             //x = 0;
             //z = 0;
-            var mesh = new THREE.Mesh( geometry, material.floor );
-            mesh.position.set(0,0,0);
+            var mesh = new THREE.Mesh(geometry, material.floor);
+            mesh.position.set(0, 0, 0);
             console.log(mesh);
             mesh.castShadow = true;
             mesh.receiveShadow = true;
@@ -31,7 +32,7 @@ define(['three', 'scene', 'material'], function (THREE, scene, material) {
 
             var object = new THREE.Object3D();
             object.add(mesh);
-            object.position.set(x,y,z);
+            object.position.set(x, y, z);
             console.log(object.position);
             object.castShadow = true;
             object.receiveShadow = true;
@@ -40,21 +41,22 @@ define(['three', 'scene', 'material'], function (THREE, scene, material) {
         });
     };
 
-    var loadTexture = function(texture){
+    var loadTexture = function (texture) {
         //textureLoader.load(texture,function(texture){
         //    console.log(texture);
         //});
     };
 
-    var getObjects = function(){
+    var getObjects = function () {
         return objects;
     };
 
     return {
         getObjects: getObjects,
         loadModel: loadModel,
-        loadTexture:loadTexture,
+        loadTexture: loadTexture,
         modelLoader: modelLoader,
-        textureLoader: textureLoader
+        textureLoader: textureLoader,
+        terrainLoader: terrainLoader
     };
 });
