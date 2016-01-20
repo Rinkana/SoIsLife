@@ -11,6 +11,7 @@ use routing\Route;
 //Todo: set default regex consts
 return [
     Route::get("scripts/:script","Script|get")->setConstraints(["script" => ".+"]),
+    Route::get("model/terrain/:x/:z","Model|getTerrain"),
     Route::get("model/:x/:y/:z","Model|get"),
     Route::get(":page","Index")->setConstraints(["page" => ".+"]),
     Route::get("","Index")

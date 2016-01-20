@@ -25,4 +25,9 @@ abstract class BaseController
     public function index(){
         var_dump($this);
     }
+
+    final public function renderView($name = ""){
+        $name = ($name == "" ? lcfirst(str_replace("Controller","",get_class($this))) : $name);
+        var_dump($name);
+    }
 }
