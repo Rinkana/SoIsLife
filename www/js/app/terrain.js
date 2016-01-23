@@ -57,12 +57,13 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader","co
 
         for(var zPos = -depth; zPos <= depth; zPos++){
             for(var xPos = -width; xPos <= width; xPos++){
+                var boxName = xPos + "|" + zPos;
                 var boxMesh = new THREE.Mesh(boxGeo,boxMat);
                 var height = meshTile.geometry.points[zPos + depth][xPos + width] * meshTile.geometry.size / 3 + 1;
 
                 boxMesh.position.set(xPos,height,zPos);
                 scene.add(boxMesh);
-                controls.transform.attach(boxMesh);
+                mesh.set(boxName,"debug",boxMesh);
             }
         }
 

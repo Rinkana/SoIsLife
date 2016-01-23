@@ -1,4 +1,4 @@
-define(["jquery","three","clock","container","raycaster"],function($,THREE,clock,container,raycaster){
+define(["jquery", "three", "clock", "container", "raycaster", "mesh", "controls"], function ($, THREE, clock, container, raycaster, mesh, controls) {
 
     var movements = [];
     var movingTo = new THREE.Vector3();
@@ -7,16 +7,16 @@ define(["jquery","three","clock","container","raycaster"],function($,THREE,clock
     var containerSize = container.getContainerSize();
     var mouseVector = new THREE.Vector2();
 
-    var addMovement = function(movement){
+    var addMovement = function (movement) {
         movements.push(movement);
     };
 
-    var getNewPosition = function(delta,currentPosition){
+    var getNewPosition = function (delta, currentPosition) {
 
         var newPositions = {
-            x:0,
-            y:0,
-            z:0
+            x: 0,
+            y: 0,
+            z: 0
         };
 
         if (movingTo.x.toFixed(3) != currentPosition.x.toFixed(3)) {
@@ -39,38 +39,50 @@ define(["jquery","three","clock","container","raycaster"],function($,THREE,clock
 
     };
 
-    var calculateNewPosition = function(x,y){
+    var calculateNewPosition = function (x, y) {
         var position = [( x - containerSize.left ) / containerSize.width, ( y - containerSize.top ) / containerSize.height];
         mouseVector.fromArray(position);
         mouseVector.set(( mouseVector.x * 2 ) - 1, -( mouseVector.y * 2 ) + 1);
 
-        var intersects = raycaster.intersectByVector(mouseVector);
+        var intersects = raycaster.intersectByVector(mouseVector, mesh.getArray());
+        console.log(mesh.getArray());
+
 
         if (intersects.length > 0) {
             var intersect = intersects[0];
 
+
+            if (intersect.object.geometry.type == "TerrainGeometry") {
+
+                //move to a new terrain position
+                var newPosition = intersect.object.geometry.vertices[intersect.face.a].clone();
+                newPosition.applyMatrix4(intersect.object.matrixWorld);
+                newPosition.x = intersect.point.x + intersect.face.normal.x;
+                newPosition.z = intersect.point.z + intersect.face.normal.z;
+                newPosition.divideScalar(1).floor().multiplyScalar(1).addScalar(0.5);
+                newPosition.y = parseFloat((newPosition.y + 0.5).toFixed(2)); //Otherwise the clock will cause issues.
+                addMovement(newPosition);
+
+            } else if (intersect.object.geometry.type == "BoxGeometry") {
+
+                controls.transform.attach(intersect.object);
+            }
+
             console.log(intersect);
 
-            var newPosition = intersect.object.geometry.vertices[intersect.face.a].clone();
-            newPosition.applyMatrix4(intersect.object.matrixWorld);
-            newPosition.x = intersect.point.x + intersect.face.normal.x;
-            newPosition.z = intersect.point.z + intersect.face.normal.z;
-            newPosition.divideScalar(1).floor().multiplyScalar(1).addScalar(0.5);
-            newPosition.y = parseFloat((newPosition.y + 0.5).toFixed(2)); //Otherwise the clock will cause issues.
-            addMovement(newPosition);
 
         }
     };
 
-    var movementEquals = function(position){
+    var movementEquals = function (position) {
         return movingTo.equals(position);
     };
 
     //Todo: better return types?
-    var getNextMovement = function(currentPosition){
-        if(!movementEquals(currentPosition)){
-            return getNewPosition(clock.getDelta(),currentPosition);
-        }else if(movements.length > 0){
+    var getNextMovement = function (currentPosition) {
+        if (!movementEquals(currentPosition)) {
+            return getNewPosition(clock.getDelta(), currentPosition);
+        } else if (movements.length > 0) {
             clock.start();
             console.log("start");
             movingTo = movements.shift();
@@ -81,11 +93,11 @@ define(["jquery","three","clock","container","raycaster"],function($,THREE,clock
     };
 
     return {
-        getNewPosition:getNewPosition,
-        addMovement:addMovement,
-        movementEquals:movementEquals,
-        getNextMovement:getNextMovement,
-        calculateNewPosition:calculateNewPosition
+        getNewPosition: getNewPosition,
+        addMovement: addMovement,
+        movementEquals: movementEquals,
+        getNextMovement: getNextMovement,
+        calculateNewPosition: calculateNewPosition
     }
 
 });

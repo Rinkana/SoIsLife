@@ -49,7 +49,7 @@ define(["jquery","three","geometry","material","utils"],function($,THREE,geometr
     };
 
     var getArray = function(name, group){
-        var object = utils.deepObjectGet(meshes,name);
+        var object = get(name,group);
         return Object.keys(object).map(function (key) {return object[key]});
     };
     

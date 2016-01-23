@@ -5,9 +5,9 @@
  */
 define(["jquery", "three", "container"], function ($, THREE, container) {
 
-    //var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
     //var cameraSize = 512;
-    var cameraSize = {
+    /*var cameraSize = {
         left: window.innerWidth / -2,
         right: window.innerWidth / 2,
         top: window.innerHeight / 2,
@@ -17,7 +17,7 @@ define(["jquery", "three", "container"], function ($, THREE, container) {
     var camera = new THREE.OrthographicCamera(  cameraSize.left,  cameraSize.right, cameraSize.top, cameraSize.bottom, -250, 250 );
     camera.fov = 70;
     camera.zoom = 10;
-    camera.position.z = 40;
+    camera.position.z = 40;*/
 
     var updateFocus = function (vector) {
         //Todo: implement
