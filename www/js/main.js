@@ -4,6 +4,7 @@ require.config({
         'threeCore': {exports: "THREE"},
         'OrbitControls': {deps: ['threeCore'], exports: "THREE"},
         'TerrainGeometry': {deps: ['threeCore'], exports: "THREE"},
+        'TransformControls': {deps: ['threeCore'], exports: "THREE"},
         'TerrainLoader': {deps: ['threeCore','TerrainGeometry'], exports: "THREE"}
         //'TerrainBufferGeometry': {deps: ['threeCore'], exports: "THREE"}
     },
@@ -14,6 +15,7 @@ require.config({
         //TerrainBufferGeometry: "../lib/three/TerrainBufferGeometry",
         TerrainLoader: "../lib/three/TerrainLoader",
         TerrainGeometry: "../lib/three/TerrainGeometry",
+        TransformControls: "../lib/three/TransformControls",
         three: "../lib/three/three",
         dat: "/scripts/exdat/build/dat.gui.min"
     }

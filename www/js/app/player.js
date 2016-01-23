@@ -69,7 +69,7 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
         camera.position.y = parseFloat((camera.position.y).toFixed(2));
         camera.position.z = parseFloat((camera.position.z).toFixed(2));
 
-        controls.target.copy(player.position);
+        controls.main.target.copy(player.position);
     };
 
     var move = function () {
@@ -79,7 +79,7 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
         if (typeof nextMovement == "object") {
             setNewPosition(nextMovement);
         } else if (nextMovement === true) {
-            terrain.buildTileRadius(getPlayerInfo());
+            //terrain.buildTileRadius(getPlayerInfo());
             console.log();
         }
 

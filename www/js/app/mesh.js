@@ -10,6 +10,8 @@ define(["jquery","three","geometry","material","utils"],function($,THREE,geometr
             meshes[group] = {};
         }
         meshes[group][name] = object;
+
+        console.log(object);
     };
 
     var get = function(name,group){
@@ -34,6 +36,11 @@ define(["jquery","three","geometry","material","utils"],function($,THREE,geometr
             group = name[1];
             name = name[0];
         }
+
+        if(meshes[group] == undefined){
+            return false;
+        }
+
         return meshes[group][name];
     };
 

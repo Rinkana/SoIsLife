@@ -80,8 +80,14 @@ define([
         //terrain.createTile(1,1.5).rotation.set(-Math.PI / 2, 0, Math.PI);
         //terrain.createTile(0,2).rotation.set(-Math.PI / 2, 0, Math.PI);
         terrain.load(0,0);
+        setTimeout(function(){
+
+            terrain.editTile(0,0);
+        },500);
 
         player.init();
+
+        scene.add(controls.transform);
 
         debug.enable();
 
@@ -90,7 +96,8 @@ define([
     var animate = function () {
         requestAnimationFrame( animate );
         player.move();
-        controls.update();
+        controls.main.update();
+        controls.transform.update();
         renderer.render(scene, camera);
     };
 

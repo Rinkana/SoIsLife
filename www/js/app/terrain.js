@@ -2,7 +2,7 @@
  *
  *
  */
-define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], function (THREE, mesh, geometry, material, scene, config, loader) {
+define(["three", "mesh", "geometry", "material", "scene", "config", "loader","controls"], function (THREE, mesh, geometry, material, scene, config, loader,controls) {
 
     material.set("floor", new THREE.MeshPhongMaterial({
         color: 0x06330F,//0x000000
@@ -12,7 +12,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         vertexColors: THREE.FaceColors,
         shininess: 3,
         side: THREE.FrontSide,
-        wireframe: false
+        wireframe: true
     }));
 
     var createTile = function (x, z, geometry) {
@@ -41,6 +41,34 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         scene.add(mesh.get(meshName,"floor"));
 
         return mesh.get(meshName,"floor");
+    };
+
+    var editTile = function(x,z){
+        var meshName =  x + "|" + z;
+        var meshTile = mesh.get(meshName,"floor");
+
+        var boxGeo = new THREE.BoxGeometry(0.1,0.1,0.1);
+        var boxMat = new THREE.MeshBasicMaterial(0x00ff00);
+
+        var width = (meshTile.geometry.terrainWidth / 2) - 0.5,
+            depth = (meshTile.geometry.terrainDepth / 2) - 0.5;
+
+        //for(var zPos = -(meshTile.geometry.terrainWidth))
+
+        for(var zPos = -depth; zPos <= depth; zPos++){
+            for(var xPos = -width; xPos <= width; xPos++){
+                var boxMesh = new THREE.Mesh(boxGeo,boxMat);
+                var height = meshTile.geometry.points[zPos + depth][xPos + width] * meshTile.geometry.size / 3 + 1;
+
+                boxMesh.position.set(xPos,height,zPos);
+                scene.add(boxMesh);
+                controls.transform.attach(boxMesh);
+            }
+        }
+
+        /*for(var i = 0; i < meshTile.geometry.vertices.length;$i++){
+            vertex =
+        }*/
     };
 
     var loadTile = function (x, z) {
@@ -141,7 +169,8 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         updateTerrain: updateTerrain,
         createRandomTile: createRandomTile,
         buildTileRadius: buildTileRadius,
-        load:load
+        load:load,
+        editTile:editTile
     };
 
 });
