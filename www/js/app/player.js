@@ -3,10 +3,6 @@
  */
 define(["jquery", "container", "three", "controls", "scene", "camera", "terrain", "position", "config"], function ($, container, THREE, controls, scene, camera, terrain, position, config) {
     var player = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshLambertMaterial({color: 0xff0000}));
-    var mousePos = {
-        x:0,
-        y:0
-    };
 
     player.position.y += 2;
     scene.add(player);
@@ -59,7 +55,7 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
     var setNewPosition = function (newPosition) {
 
         //Todo: less ugly rounding...
-        player.position.add(newPosition)
+        player.position.add(newPosition);
         player.position.x = parseFloat((player.position.x).toFixed(2));
         player.position.y = parseFloat((player.position.y).toFixed(2));
         player.position.z = parseFloat((player.position.z).toFixed(2));
@@ -85,18 +81,6 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
 
     };
 
-    //Todo: mousedown and mouseup instead of click.
-    $(container.element).on("mousedown touchstart", function (event) {
-        event.preventDefault();
-        mousePos.x = event.clientX;
-        mousePos.y = event.clientY;
-    }).on("mouseup touchend", function (event) {
-        event.preventDefault();
-        if (Math.abs(mousePos.x - event.clientX) <= 5 && Math.abs(mousePos.y - event.clientY) <= 5) {
-            position.calculateNewPosition(event.clientX, event.clientY);
-        }
-    });
-
     /*$(container.element).click(function (event) {
         event.preventDefault();
         position.calculateNewPosition(event.clientX, event.clientY);
@@ -106,6 +90,7 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
     return {
         init: init,
         player: player,
-        move: move
+        move: move,
+        getPlayerInfo:getPlayerInfo
     };
 });

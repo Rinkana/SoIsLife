@@ -2,7 +2,7 @@
  *
  *
  */
-define(["three", "mesh", "geometry", "material", "scene", "config", "loader","controls"], function (THREE, mesh, geometry, material, scene, config, loader,controls) {
+define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], function (THREE, mesh, geometry, material, scene, config, loader) {
 
     material.set("floor", new THREE.MeshPhongMaterial({
         color: 0x06330F,//0x000000
@@ -38,38 +38,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader","co
 
         mesh.set(meshName,"floor" ,plane);
 
-        scene.add(mesh.get(meshName,"floor"));
-
         return mesh.get(meshName,"floor");
-    };
-
-    var editTile = function(x,z){
-        var meshName =  x + "|" + z;
-        var meshTile = mesh.get(meshName,"floor");
-
-        var boxGeo = new THREE.BoxGeometry(0.1,0.1,0.1);
-        var boxMat = new THREE.MeshBasicMaterial(0x00ff00);
-
-        var width = (meshTile.geometry.terrainWidth / 2) - 0.5,
-            depth = (meshTile.geometry.terrainDepth / 2) - 0.5;
-
-        //for(var zPos = -(meshTile.geometry.terrainWidth))
-
-        for(var zPos = -depth; zPos <= depth; zPos++){
-            for(var xPos = -width; xPos <= width; xPos++){
-                var boxName = xPos + "|" + zPos;
-                var boxMesh = new THREE.Mesh(boxGeo,boxMat);
-                var height = meshTile.geometry.points[zPos + depth][xPos + width] * meshTile.geometry.size / 3 + 1;
-
-                boxMesh.position.set(xPos,height,zPos);
-                scene.add(boxMesh);
-                mesh.set(boxName,"debug",boxMesh);
-            }
-        }
-
-        /*for(var i = 0; i < meshTile.geometry.vertices.length;$i++){
-            vertex =
-        }*/
     };
 
     var loadTile = function (x, z) {
@@ -79,7 +48,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader","co
         });
     };
 
-    var load = function (x,z, callback) {
+    var load = function (x,z) {
         //var filename = (x >= 0 ? "p" : "n") + x + (z >= 0 ? "p" : "n") + z + ".terr";
         var filename = "p0p0.terr";
         loader.terrainLoader.load("/models/"+filename,function(geometry){
@@ -170,8 +139,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader","co
         updateTerrain: updateTerrain,
         createRandomTile: createRandomTile,
         buildTileRadius: buildTileRadius,
-        load:load,
-        editTile:editTile
+        load:load
     };
 
 });

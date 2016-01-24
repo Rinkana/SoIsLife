@@ -12,8 +12,7 @@ THREE.TerrainGeometry = function (points, size) {
     this.terrainDepth = this.points.length;
 
     var width = (this.terrainWidth / 2) - 0.5,
-        depth = (this.terrainDepth / 2) - 0.5,
-        faceCounter = 0;
+        depth = (this.terrainDepth / 2) - 0.5;
 
     var vector1,
         vector2,
@@ -29,6 +28,12 @@ THREE.TerrainGeometry = function (points, size) {
     };
 
     this.calculatePoints = function () {
+        //We want to be able to recalc so we reset the faces and vertices
+        this.vertices = [];
+        this.faces = [];
+
+        var faceCounter = 0;
+
         for (var ix = -width; ix < width; ix++) {
             for (var iz = -depth; iz < depth; iz++) {
 

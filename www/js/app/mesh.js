@@ -1,7 +1,7 @@
 /**
  * Todo: use this for geometry handling and caching
  */
-define(["jquery","three","geometry","material","utils"],function($,THREE,geometry,material,utils){
+define(["jquery","three","geometry","material","utils","scene"],function($,THREE,geometry,material,utils,scene){
     var meshes = {
     };
 
@@ -11,7 +11,9 @@ define(["jquery","three","geometry","material","utils"],function($,THREE,geometr
         }
         meshes[group][name] = object;
 
-        console.log(object);
+        scene.add(object);
+
+        //console.log(object);
     };
 
     var get = function(name,group){
@@ -21,6 +23,8 @@ define(["jquery","three","geometry","material","utils"],function($,THREE,geometr
 
             var groups = Object.keys(meshes);
             for(var groupKey in groups){
+                if (!groups.hasOwnProperty(groupKey)) continue;
+
                 for(var meshKey in meshes[groups[groupKey]]){
                     if (!meshes[groups[groupKey]].hasOwnProperty(meshKey)) continue;
                     var newName = groups[groupKey]+"."+meshKey;
