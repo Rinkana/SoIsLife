@@ -56,6 +56,7 @@ define([
         controls.main.update();
         controls.transform.update();
         renderer.render(scene, camera);
+
     };
 
     return {

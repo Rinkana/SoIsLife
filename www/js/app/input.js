@@ -34,7 +34,6 @@ define(["three","jquery","container","position","terrainEditor","raycaster","mes
     }).on("mouseup touchend", function (event) {
         event.preventDefault();
         if (Math.abs(mousePos.x - event.clientX) <= 5 && Math.abs(mousePos.y - event.clientY) <= 5) {
-            console.log(position);
             getClickedObject(event.clientX, event.clientY);
         }
     });
