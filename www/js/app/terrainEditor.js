@@ -55,7 +55,7 @@ define(["three", "camera", "container", "mesh", "controls"], function (THREE, ca
         tile.geometry.points[parseInt(activeVertex[0]) + 32][parseInt(activeVertex[1]) + 32] = newVertexValue;
         tile.geometry.calculatePoints();
         tile.geometry.verticesNeedUpdate = true;
-        //console.log();
+        console.log(mesh.get(activeTile,"floor"));
         //tile.geometry.groupsNeedUpdate = true;
         //tile.geometry.elementsNeedUpdate = true;
 

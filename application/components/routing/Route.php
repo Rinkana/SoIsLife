@@ -23,6 +23,7 @@ class Route
 
     const DEFAULT_PATTERN = '[a-zA-Z0-9\-\_]+';
 
+
     public function __construct($routeUrl)
     {
         $this->routeUrl = $routeUrl;

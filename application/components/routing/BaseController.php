@@ -9,6 +9,7 @@
 namespace routing;
 
 use web\Request;
+use web\View;
 
 abstract class BaseController
 {
@@ -17,9 +18,14 @@ abstract class BaseController
      */
     protected $request;
 
-    public final function __construct()
-    {
+    /**
+     * @var View
+     */
+    protected $view;
 
+    final public function __construct()
+    {
+        $this->view = new View();
     }
 
     public function index(){
@@ -28,6 +34,8 @@ abstract class BaseController
 
     final public function renderView($name = ""){
         $name = ($name == "" ? lcfirst(str_replace("Controller","",get_class($this))) : $name);
+
+        $view = new View();
         var_dump($name);
     }
 }

@@ -10,6 +10,7 @@ THREE.TerrainGeometry = function (points, size) {
     this.size = this.size || 1;
     this.terrainWidth = this.points[0].length;
     this.terrainDepth = this.points.length;
+    this.dynamic = true;
 
     var width = (this.terrainWidth / 2) - 0.5,
         depth = (this.terrainDepth / 2) - 0.5;

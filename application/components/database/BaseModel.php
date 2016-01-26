@@ -9,11 +9,27 @@
 namespace database;
 
 
-class BaseModel
+abstract class BaseModel
 {
-    protected $database;
+    /**
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $created;
+
+    /**
+     * @var string
+     */
+    private $updated;
+
+
+    /*protected $database;
     public final function __construct()
     {
         $this->database = new Database();
-    }
+    }*/
 }
