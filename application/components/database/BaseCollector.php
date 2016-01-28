@@ -9,7 +9,7 @@
 namespace database;
 
 
-abstract class BaseSet
+abstract class BaseCollector
 {
     final public static function find($id){
         //Load models by ID

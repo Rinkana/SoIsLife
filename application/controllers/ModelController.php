@@ -18,7 +18,7 @@ class ModelController extends \routing\BaseController
 
         $this->view->setData(compact('terrainData'));
 
-        $this->renderView();
+        $this->renderView("terrain");
         //include(ROOT."/application/views/terrain.php");
     }
 }
