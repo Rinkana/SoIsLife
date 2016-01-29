@@ -10,7 +10,7 @@ require.config({
     },
     paths: {
         jquery: "/scripts/jquery/dist/jquery",
-        threeCore: "/scripts/three.js/build/three",
+        threeCore: "/scripts/three/three",
         OrbitControls: "../lib/three/OrbitControls",
         //TerrainBufferGeometry: "../lib/three/TerrainBufferGeometry",
         TerrainLoader: "../lib/three/TerrainLoader",
