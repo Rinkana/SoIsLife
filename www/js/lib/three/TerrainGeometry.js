@@ -30,6 +30,8 @@ THREE.TerrainGeometry = function (points, size) {
 
     this.calculatePoints = function () {
         //We want to be able to recalc so we reset the faces and vertices
+        this.vertices = []; //Todo: remove, needs to be in the rebuild function overwritten
+        this.faces = [];
         var faceCounter = 0;
 
         for (var ix = -width; ix < width; ix++) {
@@ -67,7 +69,7 @@ THREE.TerrainGeometry = function (points, size) {
         }
     };
 
-    var update = function(){
+    this.rebuild = function(){
         for (var ix = -width; ix < width; ix++) {
             for (var iz = -depth; iz < depth; iz++) {
 
