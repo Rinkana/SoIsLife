@@ -56,20 +56,21 @@ define(["three", "camera", "container", "mesh", "controls"], function (THREE, ca
         //console.log(positionData,activeTile,activeVertex);
 
         tile.geometry.points[activeVertex[1]][activeVertex[0]] = newVertexValue;
-        tile.geometry.calculatePoints();
-        tile.geometry.verticesNeedUpdate = true;
-        tile.geometry.normalsNeedUpdate = true;
-        tile.geometry.groupsNeedUpdate = true;
-        tile.geometry.elementsNeedUpdate = true;
-        delete tile.geometry.__directGeometry;
+        tile.geometry.rebuild();
+        //tile.geometry.calculatePoints();
+        //tile.geometry.verticesNeedUpdate = true;
+        //tile.geometry.normalsNeedUpdate = true;
+        //tile.geometry.groupsNeedUpdate = true;
+        //tile.geometry.elementsNeedUpdate = true;
+        //delete tile.geometry.__directGeometry;
         //tile.geometry.applyMatrix(-1);
 
     };
 
     controls.transform.addEventListener("objectChange",function(){
-        //editMade();
-        clearTimeout(editTimeout);
-        editTimeout = setTimeout(editMade,10);
+        editMade();
+        //clearTimeout(editTimeout);
+        //editTimeout = setTimeout(editMade,10);
     });
 
     return {
