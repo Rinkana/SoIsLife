@@ -91,8 +91,9 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
 
     //Todo: much refactoring....
     var cleanTerrainCache = function (radius) {
-        for (var meshName in mesh.get()) {
-            if (!mesh.get().hasOwnProperty(meshName)) continue;
+        var terrainMeshes = mesh.get();
+        for (var meshName in terrainMeshes) {
+            if (!terrainMeshes.hasOwnProperty(meshName)) continue;
 
             var meshPosition = meshName.split("|");
 
@@ -103,9 +104,9 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
                      radius.end.z < meshPosition[1]
                 ) {
                     console.log("RM" + meshName);
-                    //mesh.get(meshName).material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: false } );
-                    scene.remove(mesh.get(meshName));
-                    mesh.remove(meshName);
+                    mesh.get(meshName).material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: false } );
+                    //scene.remove(mesh.get(meshName));
+                    //mesh.remove(meshName);
                 }else{
                     mesh.visible = false;
                 }

@@ -14,6 +14,7 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
 
     var getPlayerInfo = function () {
         //Get the tile on wich the player is currently on
+        console.log("slowstart");
         var xPos = (player.position.x / (config.tileSize / 2));
         xPos = (xPos > 0 ? Math.floor(xPos) : Math.ceil(xPos));
         var zPos = (player.position.z / (config.tileSize / 2));
@@ -54,16 +55,8 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
 
     var setNewPosition = function (newPosition) {
 
-        //Todo: less ugly rounding...
         player.position.add(newPosition);
-        player.position.x = parseFloat((player.position.x).toFixed(2));
-        player.position.y = parseFloat((player.position.y).toFixed(2));
-        player.position.z = parseFloat((player.position.z).toFixed(2));
-
         camera.position.add(newPosition);
-        camera.position.x = parseFloat((camera.position.x).toFixed(2));
-        camera.position.y = parseFloat((camera.position.y).toFixed(2));
-        camera.position.z = parseFloat((camera.position.z).toFixed(2));
 
         controls.main.target.copy(player.position);
     };
@@ -75,7 +68,7 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
         if (typeof nextMovement == "object") {
             setNewPosition(nextMovement);
         } else if (nextMovement === true) {
-            //terrain.buildTileRadius(getPlayerInfo());
+            terrain.buildTileRadius(getPlayerInfo());
             console.log();
         }
 

@@ -16,14 +16,28 @@ define(["jquery", "three", "clock"], function ($, THREE, clock) {
             z: 0
         };
 
-        if (movingTo.x.toFixed(3) != currentPosition.x.toFixed(3)) {
-            newPositions.x = parseFloat(((movingTo.x - currentPosition.x) < 0 ? -(movementSpeed * delta) : (movementSpeed * delta)).toFixed(1));
+        var movementAddition = movementSpeed * delta;
+
+        if (movingTo.x != currentPosition.x) {
+            if( Math.abs(movingTo.x - currentPosition.x) > movementAddition) {
+                newPositions.x = ((movingTo.x - currentPosition.x) < 0 ? -movementAddition : movementAddition);
+            }else{
+                newPositions.x = (movingTo.x - currentPosition.x);
+            }
         }
-        if (movingTo.y.toFixed(3) != currentPosition.y.toFixed(3)) {
-            newPositions.y = parseFloat(((movingTo.y - currentPosition.y) < 0 ? -(movementSpeed * delta) : (movementSpeed * delta)).toFixed(1));
+        if (movingTo.y != currentPosition.y) {
+            if( Math.abs(movingTo.y - currentPosition.y) > movementAddition) {
+                newPositions.y = ((movingTo.y - currentPosition.y) < 0 ? -movementAddition : movementAddition);
+            }else{
+                newPositions.y = (movingTo.y - currentPosition.y);
+            }
         }
-        if (movingTo.z.toFixed(3) != currentPosition.z.toFixed(3)) {
-            newPositions.z = parseFloat(((movingTo.z - currentPosition.z) < 0 ? -(movementSpeed * delta) : (movementSpeed * delta)).toFixed(1));
+        if (movingTo.z != currentPosition.z) {
+            if( Math.abs(movingTo.z - currentPosition.z) > movementAddition) {
+                newPositions.z = ((movingTo.z - currentPosition.z) < 0 ? -movementAddition : movementAddition);
+            }else{
+                newPositions.z = (movingTo.z - currentPosition.z);
+            }
         }
 
         return newPositions;
@@ -31,12 +45,14 @@ define(["jquery", "three", "clock"], function ($, THREE, clock) {
     };
 
     var calculateNewPosition = function(intersect){
-        var newPosition = intersect.object.geometry.vertices[intersect.face.a].clone();
-        newPosition.applyMatrix4(intersect.object.matrixWorld);
-        newPosition.x = intersect.point.x + intersect.face.normal.x;
-        newPosition.z = intersect.point.z + intersect.face.normal.z;
-        newPosition.divideScalar(1).floor().multiplyScalar(1).addScalar(0.5);
-        newPosition.y = parseFloat((newPosition.y + 0.5).toFixed(2)); //Otherwise the clock will cause issues.
+        console.log(intersect);
+        var newPosition = intersect.point.clone();
+        //var newPosition = intersect.object.geometry.vertices[intersect.face.a].clone();
+        //Todo: do i need this?
+        //newPosition.applyMatrix4(intersect.object.matrixWorld);
+        //newPosition.add(intersect.face.normal);
+        newPosition.y += 1;
+        console.log(newPosition);
         addMovement(newPosition);
     };
 
@@ -50,7 +66,6 @@ define(["jquery", "three", "clock"], function ($, THREE, clock) {
             return getNewPosition(clock.getDelta(), currentPosition);
         } else if (movements.length > 0) {
             clock.start();
-            console.log("start");
             movingTo = movements.shift();
             return true;
         }
