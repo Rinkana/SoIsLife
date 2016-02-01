@@ -18,7 +18,7 @@ define(["jquery","three","geometry","material","utils","scene"],function($,THREE
 
     var get = function(name,group){
         //Todo: not found object
-        if(typeof name == "undefined"){
+        if(name == undefined && group == undefined){
             var allMeshes = {};
 
             var groups = Object.keys(meshes);
@@ -43,6 +43,10 @@ define(["jquery","three","geometry","material","utils","scene"],function($,THREE
 
         if(meshes[group] == undefined){
             return false;
+        }
+
+        if(name == undefined){
+            return meshes[group];
         }
 
         return meshes[group][name];

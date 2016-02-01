@@ -91,7 +91,8 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
 
     //Todo: much refactoring....
     var cleanTerrainCache = function (radius) {
-        var terrainMeshes = mesh.get();
+        var terrainMeshes = mesh.get(undefined,"floor");
+        console.log(terrainMeshes);
         for (var meshName in terrainMeshes) {
             if (!terrainMeshes.hasOwnProperty(meshName)) continue;
 
@@ -104,9 +105,11 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
                      radius.end.z < meshPosition[1]
                 ) {
                     console.log("RM" + meshName);
-                    mesh.get(meshName).material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: false } );
-                    //scene.remove(mesh.get(meshName));
-                    //mesh.remove(meshName);
+                    mesh.get(meshName).visible = false;
+                    terrainMeshes[meshName].material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: false } );
+                    //mesh.get(meshName).material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: false } );
+                    scene.remove(mesh.get(meshName));
+                    mesh.remove(meshName);
                 }else{
                     mesh.visible = false;
                 }
@@ -116,7 +119,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
     };
 
     var buildTileRadius = function (playerInfo) {
-        cleanTerrainCache(playerInfo.bufferRadius);
+        cleanTerrainCache(playerInfo.visibleRadius);
 
         for (var xCounter = playerInfo.visibleRadius.start.x; xCounter <= playerInfo.visibleRadius.end.x; xCounter++) {
             for (var zCounter = playerInfo.visibleRadius.start.z; zCounter <= playerInfo.visibleRadius.end.z; zCounter++) {

@@ -14,11 +14,8 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
 
     var getPlayerInfo = function () {
         //Get the tile on wich the player is currently on
-        console.log("slowstart");
-        var xPos = (player.position.x / (config.tileSize / 2));
-        xPos = (xPos > 0 ? Math.floor(xPos) : Math.ceil(xPos));
-        var zPos = (player.position.z / (config.tileSize / 2));
-        zPos = (zPos > 0 ? Math.floor(zPos) : Math.ceil(zPos));
+        var xPos = Math.ceil( (player.position.x - (config.tileSize / 2)) / config.tileSize),
+            zPos = Math.ceil( (player.position.z - (config.tileSize / 2)) / config.tileSize);
 
         var currentTile = {
             x: xPos,
@@ -37,16 +34,6 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
                 end: {
                     x: currentTile.x + config.tileRadiusVisible,
                     z: currentTile.z + config.tileRadiusVisible
-                }
-            },
-            bufferRadius: {
-                start: {
-                    x: currentTile.x - config.tileRadiusBuffer,
-                    z: currentTile.z - config.tileRadiusBuffer
-                },
-                end: {
-                    x: currentTile.x + config.tileRadiusBuffer,
-                    z: currentTile.z + config.tileRadiusBuffer
                 }
             }
         }
@@ -68,11 +55,13 @@ define(["jquery", "container", "three", "controls", "scene", "camera", "terrain"
         if (typeof nextMovement == "object") {
             setNewPosition(nextMovement);
         } else if (nextMovement === true) {
-            terrain.buildTileRadius(getPlayerInfo());
-            console.log();
         }
 
     };
+
+    setInterval(function(){
+        terrain.buildTileRadius(getPlayerInfo());
+    },2000);
 
     /*$(container.element).click(function (event) {
         event.preventDefault();
