@@ -1,10 +1,17 @@
 define(["jquery", "three", "clock"], function ($, THREE, clock) {
 
     var movements = [];
-    var movingTo = new THREE.Vector3();
+    var movingTo;
     var movementSpeed = 5; //per second
 
-    var addMovement = function (movement) {
+    var addMovement = function (movement, fast) {
+        fast = (fast == undefined ? false : fast);
+
+        if(fast){
+            movements = [];
+            movingTo = undefined;
+        }
+
         movements.push(movement);
     };
 
@@ -53,7 +60,7 @@ define(["jquery", "three", "clock"], function ($, THREE, clock) {
         //newPosition.add(intersect.face.normal);
         newPosition.y += 1;
         console.log(newPosition);
-        addMovement(newPosition);
+        addMovement(newPosition,true);
     };
 
     var movementEquals = function (position) {
@@ -62,7 +69,7 @@ define(["jquery", "three", "clock"], function ($, THREE, clock) {
 
     //Todo: better return types?
     var getNextMovement = function (currentPosition) {
-        if (!movementEquals(currentPosition)) {
+        if (movingTo != undefined && !movementEquals(currentPosition)) {
             return getNewPosition(clock.getDelta(), currentPosition);
         } else if (movements.length > 0) {
             clock.start();
