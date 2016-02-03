@@ -35,7 +35,7 @@ abstract class BaseController
     final public function renderView($name = ""){
         $name = ($name == "" ? lcfirst(str_replace("Controller","",get_class($this))) : $name);
 
-        echo $this->view->getHTML($name);
+        return $this->view->getHTML($name);
         //var_dump($name);
     }
 }

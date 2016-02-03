@@ -4,7 +4,7 @@ return [
     "PROD" => [
 
     ],
-    "TEST" => [
+    "ACPT" => [
 
     ],
     "TEST" => [

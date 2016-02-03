@@ -30,6 +30,7 @@ class Router
      * Find and call the correct route
      *
      * @param Request $request
+     * @return mixed
      */
     public function route(Request $request)
     {
@@ -39,7 +40,7 @@ class Router
                 preg_match($route->parseRoute(),$request->getUrl(),$matches);
                 if(count($matches) > 0){
                     array_shift($matches);
-                    $route->call($request,$matches);
+                    return $route->call($request,$matches);
                     break;
                 }
             }

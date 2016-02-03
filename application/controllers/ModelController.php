@@ -5,6 +5,8 @@
  * User: max
  * Date: 20-Jan-16
  * Time: 22:17
+ *
+ * @todo: outdated, remove/rewrite
  */
 class ModelController extends \routing\BaseController
 {
@@ -18,7 +20,7 @@ class ModelController extends \routing\BaseController
 
         $this->view->setData(compact('terrainData'));
 
-        $this->renderView("terrain");
+        return $this->renderView("terrain");
         //include(ROOT."/application/views/terrain.php");
     }
 }

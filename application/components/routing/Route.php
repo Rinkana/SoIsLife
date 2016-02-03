@@ -57,6 +57,9 @@ class Route
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getMethod(){
         return $this->method;
     }
@@ -100,17 +103,22 @@ class Route
      *
      * @param Request $request
      * @param array $parameters
+     * @return mixed
      */
     public function call(Request $request, array $parameters){
 
         if(is_callable($this->callback)){
-            call_user_func_array($this->callback,$parameters);
+            return call_user_func_array($this->callback,$parameters);
         }
+
         $controllerName = $this->controller."Controller";
         $controller = new $controllerName($request);
-        call_user_func_array(array($controller,$this->controllerMethod),$parameters);
+        return call_user_func_array(array($controller,$this->controllerMethod),$parameters);
     }
 
+    /**
+     * @return mixed
+     */
     public function getCallback(){
         return $this->callback;
     }

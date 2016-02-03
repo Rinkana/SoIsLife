@@ -10,10 +10,18 @@ namespace core;
 
 use \routing\Router;
 use web\Request;
+use web\Response;
 
 class Kernel
 {
+    /**
+     * @var Request
+     */
     protected $request;
+    /**
+     * @var Response
+     */
+    protected $response;
 
     public function __construct()
     {
@@ -29,18 +37,31 @@ class Kernel
     /**
      * Set the core requred vars
      */
-    public function setVars()
+    protected function setVars()
     {
 
         $this->request = new Request();
+        $this->response = new Response();
 
     }
 
     /**
      * Init done? Continue to the deeper layers for the output.
      */
-    public function run(){
+    protected function run()
+    {
         $router = new Router();
-        $router->route($this->request);
+
+        $responseData = $router->route($this->request);
+
+        $this->response->setMessageBody($responseData);
+    }
+
+    /**
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 }
