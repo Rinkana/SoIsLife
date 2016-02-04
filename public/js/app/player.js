@@ -1,11 +1,11 @@
 /**
  * Load the engine
  */
-define(["jquery", "container", "three", "controls", "scene", "camera", "terrain", "position", "config"], function ($, container, THREE, controls, scene, camera, terrain, position, config) {
+define(["jquery", "container", "three", "controls", "mesh", "camera", "terrain", "position", "config"], function ($, container, THREE, controls, mesh, camera, terrain, position, config) {
     var player = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshLambertMaterial({color: 0xff0000}));
-
     player.position.y += 2;
-    scene.add(player);
+
+    mesh.set("player","utils",player);
 
     var init = function () {
 

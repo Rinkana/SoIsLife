@@ -105,10 +105,8 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
                      radius.end.z < meshPosition[1]
                 ) {
                     console.log("RM" + meshName);
-                    mesh.get(meshName).visible = false;
-                    terrainMeshes[meshName].material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: false } );
-                    //mesh.get(meshName).material = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: false } );
-                    scene.remove(mesh.get(meshName));
+                    delete terrainMeshes[meshName];
+                    scene.remove(terrainMeshes[meshName]);
                     mesh.remove(meshName);
                 }else{
                     mesh.visible = false;

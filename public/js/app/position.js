@@ -1,8 +1,12 @@
-define(["jquery", "three", "clock"], function ($, THREE, clock) {
+define(["jquery", "three", "clock", "mesh"], function ($, THREE, clock, mesh) {
+
+    var movingToPointer = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.3, 0.5), new THREE.MeshLambertMaterial({color: 0xfff000}));
+    //movingToPointer.position.y += 1.14;
+    mesh.set("moving to","utils", movingToPointer);
 
     var movements = [];
     var movingTo;
-    var movementSpeed = 5; //per second
+    var movementSpeed = 9; //per second
 
     var addMovement = function (movement, fast) {
         fast = (fast == undefined ? false : fast);
@@ -74,7 +78,13 @@ define(["jquery", "three", "clock"], function ($, THREE, clock) {
         } else if (movements.length > 0) {
             clock.start();
             movingTo = movements.shift();
+            movingToPointer.visible = true;
+            movingToPointer.position.copy(movingTo);
+            movingToPointer.position.y -= 0.86;
             return true;
+        }else{
+            //Todo: fire only once?
+            movingToPointer.visible = false;
         }
 
         return false;
