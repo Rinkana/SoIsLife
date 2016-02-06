@@ -1,7 +1,7 @@
 /**
  * Load the engine
  */
-define(["jquery", "container", "three", "controls", "mesh", "camera", "terrain", "position", "config"], function ($, container, THREE, controls, mesh, camera, terrain, position, config) {
+define(["jquery", "container", "three", "controls", "mesh", "camera", "terrain", "config"], function ($, container, THREE, controls, mesh, camera, terrain, config) {
     var player = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshLambertMaterial({color: 0xff0000}));
     player.position.y += 2;
 
@@ -22,7 +22,7 @@ define(["jquery", "container", "three", "controls", "mesh", "camera", "terrain",
             z: zPos
         };
 
-        console.log(currentTile);
+        //console.log(currentTile);
 
         return {
             currentTile: currentTile,
@@ -48,17 +48,6 @@ define(["jquery", "container", "three", "controls", "mesh", "camera", "terrain",
         controls.main.target.copy(player.position);
     };
 
-    var move = function () {
-
-        var nextMovement = position.getNextMovement(player.position);
-
-        if (typeof nextMovement == "object") {
-            setNewPosition(nextMovement);
-        } else if (nextMovement === true) {
-        }
-
-    };
-
     setInterval(function(){
         terrain.buildTileRadius(getPlayerInfo());
     },2000);
@@ -72,7 +61,7 @@ define(["jquery", "container", "three", "controls", "mesh", "camera", "terrain",
     return {
         init: init,
         player: player,
-        move: move,
-        getPlayerInfo:getPlayerInfo
+        getPlayerInfo:getPlayerInfo,
+        setNewPosition:setNewPosition
     };
 });

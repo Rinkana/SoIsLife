@@ -92,7 +92,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
     //Todo: much refactoring....
     var cleanTerrainCache = function (radius) {
         var terrainMeshes = mesh.get(undefined,"floor");
-        console.log(terrainMeshes);
+        //console.log(terrainMeshes);
         for (var meshName in terrainMeshes) {
             if (!terrainMeshes.hasOwnProperty(meshName)) continue;
 

@@ -1,4 +1,4 @@
-define(["jquery", "three", "clock", "mesh"], function ($, THREE, clock, mesh) {
+define(["jquery", "three", "clock", "mesh", "collision", "player"], function ($, THREE, clock, mesh, collision, player) {
 
     var movingToPointer = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.3, 0.5), new THREE.MeshLambertMaterial({color: 0xfff000}));
     //movingToPointer.position.y += 1.14;
@@ -6,7 +6,7 @@ define(["jquery", "three", "clock", "mesh"], function ($, THREE, clock, mesh) {
 
     var movements = [];
     var movingTo;
-    var movementSpeed = 9; //per second
+    var movementSpeed = 5; //per second
 
     var addMovement = function (movement, fast) {
         fast = (fast == undefined ? false : fast);
@@ -56,14 +56,9 @@ define(["jquery", "three", "clock", "mesh"], function ($, THREE, clock, mesh) {
     };
 
     var calculateNewPosition = function(intersect){
-        console.log(intersect);
+        //console.log(intersect);
         var newPosition = intersect.point.clone();
-        //var newPosition = intersect.object.geometry.vertices[intersect.face.a].clone();
-        //Todo: do i need this?
-        //newPosition.applyMatrix4(intersect.object.matrixWorld);
-        //newPosition.add(intersect.face.normal);
         newPosition.y += 1;
-        console.log(newPosition);
         addMovement(newPosition,true);
     };
 
@@ -90,12 +85,26 @@ define(["jquery", "three", "clock", "mesh"], function ($, THREE, clock, mesh) {
         return false;
     };
 
+    var move = function(){
+        var nextMovement = getNextMovement(player.player.position);
+
+        if (typeof nextMovement == "object") {
+            if(!collision.checkCollision( player.player.position.clone().add(nextMovement) )) {
+                player.setNewPosition(nextMovement)
+            }else{
+                movingTo = undefined;
+            }
+        } else if (nextMovement === true) {
+        }
+    };
+
     return {
         getNewPosition: getNewPosition,
         addMovement: addMovement,
         movementEquals: movementEquals,
         getNextMovement: getNextMovement,
-        calculateNewPosition: calculateNewPosition
+        calculateNewPosition: calculateNewPosition,
+        move:move
     }
 
 });

@@ -18,14 +18,16 @@ define([
     'projector',
     'terrain',
     'player',
+    'position',
     'input',
+    'collision',
     'clock',
     'utils',
     'config',
     'dat',
     'debug',
     'terrainEditor'
-], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, mesh, raycaster, projector, terrain, player, input, clock, utils, config, dat, debug, terrainEditor) {
+], function ($, THREE, loader, camera, controls, geometry, texture, lights, material, renderer, scene, mesh, raycaster, projector, terrain, player, position, input, collision, clock, utils, config, dat, debug, terrainEditor) {
     var initialize = function () {
 
         lights.set("ambient", new THREE.AmbientLight(0x404040), true);
@@ -37,6 +39,7 @@ define([
         });
 
         terrain.load(0, 0);
+
 
         setTimeout(function () {
             terrainEditor.edit(0, 0);
@@ -52,7 +55,7 @@ define([
 
     var animate = function () {
         requestAnimationFrame(animate);
-        player.move();
+        position.move();
         controls.main.update();
         controls.transform.update();
         renderer.render(scene, camera);
