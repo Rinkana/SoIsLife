@@ -55,6 +55,10 @@ define(["jquery", "three", "clock", "mesh", "collision", "player"], function ($,
 
     };
 
+    var checkCollision = function(){
+        //Todo: implement
+    };
+
     var calculateNewPosition = function(intersect){
         //console.log(intersect);
         var newPosition = intersect.point.clone();
