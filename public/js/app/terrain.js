@@ -4,6 +4,8 @@
  */
 define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], function (THREE, mesh, geometry, material, scene, config, loader) {
 
+    var activeCenterTile;
+
     material.set("floor", new THREE.MeshPhongMaterial({
         color: 0x06330F,//0x000000
         emissive: 0x06330F,//0xFF8040
@@ -89,35 +91,67 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
         console.log(data.join("\n"));
     };
 
-    //Todo: much refactoring....
-    var cleanTerrainCache = function (radius) {
-        var terrainMeshes = mesh.get(undefined,"floor");
-        //console.log(terrainMeshes);
-        for (var meshName in terrainMeshes) {
-            if (!terrainMeshes.hasOwnProperty(meshName)) continue;
+    //Todo: Remove tiles that do not fall in the new tile radius
+    var cleanTerrainCache = function () {
+        if(activeCenterTile != undefined) {
+            var terrainMeshes = mesh.get(undefined, "floor")
+            for (var meshName in terrainMeshes) {
+                if (!terrainMeshes.hasOwnProperty(meshName)) continue;
 
-            var meshPosition = meshName.split("|");
+                var meshPosition = meshName.split("|");
 
-            if (meshPosition.length == 2) {
-                if ( radius.start.x > meshPosition[0] ||
-                     radius.start.z > meshPosition[1] ||
-                     radius.end.x < meshPosition[0] ||
-                     radius.end.z < meshPosition[1]
-                ) {
-                    console.log("RM" + meshName);
-                    delete terrainMeshes[meshName];
-                    scene.remove(terrainMeshes[meshName]);
-                    mesh.remove(meshName);
-                }else{
-                    mesh.visible = false;
+                if (meshPosition.length == 2) {
+                    if ((activeCenterTile.x - config.outerTileRange) > meshPosition[0] ||
+                        (activeCenterTile.z - config.outerTileRange) > meshPosition[1] ||
+                        (activeCenterTile.x + config.outerTileRange) < meshPosition[0] ||
+                        (activeCenterTile.z + config.outerTileRange) < meshPosition[1]
+                    ) {
+                        console.log("RM" + meshName);
+                        scene.remove(terrainMeshes[meshName]);
+                        delete terrainMeshes[meshName];
+                        mesh.remove(meshName);
+                    }
                 }
             }
-
         }
     };
 
     var buildTileRadius = function (playerInfo) {
-        cleanTerrainCache(playerInfo.visibleRadius);
+        var loadNewTiles = false;
+
+        if(activeCenterTile != undefined){
+            loadNewTiles = ((activeCenterTile.x - config.outerTileRange) + config.loadTileTrigger > playerInfo.currentTile.x ||
+                            (activeCenterTile.x + config.outerTileRange) - config.loadTileTrigger < playerInfo.currentTile.x ||
+                            (activeCenterTile.z - config.outerTileRange) + config.loadTileTrigger > playerInfo.currentTile.z ||
+                            (activeCenterTile.z + config.outerTileRange) - config.loadTileTrigger < playerInfo.currentTile.z );
+        }else{
+            loadNewTiles = true;
+        }
+
+        if( loadNewTiles ){
+
+            console.log("Load new tiles!");
+
+            cleanTerrainCache(playerInfo.visibleRadius);
+
+            activeCenterTile = playerInfo.currentTile;
+
+            for(var xPos = playerInfo.currentTile.x - config.outerTileRange; xPos <= playerInfo.currentTile.x + config.outerTileRange; xPos++){
+                for(var zPos = playerInfo.currentTile.z - config.outerTileRange; zPos <= playerInfo.currentTile.z + config.outerTileRange; zPos++){
+                    var meshName = xPos + "|" + zPos;
+                    var foundMesh = mesh.get(meshName,"floor");
+                    if (typeof foundMesh == "undefined") {
+                        load(xPos,zPos);
+                        //createRandomTile(xCounter, zCounter);
+                    } else if (foundMesh instanceof THREE.Mesh) {
+                        foundMesh.visible = true;
+                    }
+                }
+            }
+
+        }
+
+        /*cleanTerrainCache(playerInfo.visibleRadius);
 
         for (var xCounter = playerInfo.visibleRadius.start.x; xCounter <= playerInfo.visibleRadius.end.x; xCounter++) {
             for (var zCounter = playerInfo.visibleRadius.start.z; zCounter <= playerInfo.visibleRadius.end.z; zCounter++) {
@@ -132,7 +166,7 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
                 }
 
             }
-        }
+        }*/
     };
 
     return {
