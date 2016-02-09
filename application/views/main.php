@@ -7,5 +7,22 @@
 </head>
 <body>
 <div id="container"></div>
+<div id="debugger">
+    <div id="object-tree">
+        <ul>
+            <li>
+                <a href="#">Mesh</a>
+                <ul>
+                    <li>
+                        <a href="#">player</a>
+                    </li>
+                    <li>
+                        <a href="#">moving to</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
 </body>
 </html>

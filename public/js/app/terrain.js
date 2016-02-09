@@ -151,22 +151,6 @@ define(["three", "mesh", "geometry", "material", "scene", "config", "loader"], f
 
         }
 
-        /*cleanTerrainCache(playerInfo.visibleRadius);
-
-        for (var xCounter = playerInfo.visibleRadius.start.x; xCounter <= playerInfo.visibleRadius.end.x; xCounter++) {
-            for (var zCounter = playerInfo.visibleRadius.start.z; zCounter <= playerInfo.visibleRadius.end.z; zCounter++) {
-                var meshName = xCounter + "|" + zCounter;
-
-                var foundMesh = mesh.get(meshName,"floor");
-                if (typeof foundMesh == "undefined") {
-                    load(xCounter,zCounter);
-                    //createRandomTile(xCounter, zCounter);
-                } else if (foundMesh instanceof THREE.Mesh) {
-                    foundMesh.visible = true;
-                }
-
-            }
-        }*/
     };
 
     return {
